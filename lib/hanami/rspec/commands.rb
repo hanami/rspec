@@ -7,7 +7,10 @@ module Hanami
     module Commands
       class Install < Hanami::CLI::Command
         def call(*)
-          out.puts "rspec.."
+          fs.cp(
+            fs.expand_path("helper.rb", __dir__),
+            fs.expand_path(fs.join("spec", "spec_helper.rb"))
+          )
         end
       end
     end
