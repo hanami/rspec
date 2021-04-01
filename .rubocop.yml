@@ -5,7 +5,12 @@ inherit_from:
 Layout/LineLength:
   Exclude:
     - Gemfile
+Naming/MethodParameterName:
+  AllowedNames:
+    - fs
 Naming/HeredocDelimiterNaming:
+  Enabled: false
+Style/AccessorGrouping:
   Enabled: false
 Style/BlockDelimiters:
   Enabled: false

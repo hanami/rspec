@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "hanami/cli"
+require "shellwords"
+require_relative "./generators"
 
 module Hanami
   module RSpec
@@ -13,6 +15,19 @@ module Hanami
           )
         end
       end
+
+      module Generate
+        class Slice < Hanami::CLI::Command
+          # FIXME: dry-cli kwargs aren't correctly forwarded in Ruby 3
+          def call(options, **)
+            slice = inflector.underscore(Shellwords.shellescape(options[:slice]))
+
+            out.puts "generating #{slice} (rspec)"
+            generator = Generators::Slice.new(fs: fs, inflector: inflector)
+            generator.call(slice)
+          end
+        end
+      end
     end
   end
 end
@@ -20,4 +35,5 @@ end
 # FIXME: define hanami-cli public API
 if Hanami.architecture
   Hanami::CLI.after "install", Hanami::RSpec::Commands::Install
+  Hanami::CLI.after "generate slice", Hanami::RSpec::Commands::Generate::Slice
 end
