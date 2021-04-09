@@ -12,7 +12,7 @@ module Hanami
           @inflector = inflector
         end
 
-        def call(slice, context: Hanami::CLI::Generators::Monolith::SliceContext.new(inflector, nil, slice)) # rubocop:disable Metrics/AbcSize
+        def call(slice, context: Hanami::CLI::Generators::Monolith::SliceContext.new(inflector, nil, slice, nil)) # rubocop:disable Metrics/AbcSize
           fs.write("spec/#{slice}/action_spec.rb", t("action_spec.erb", context))
           fs.write("spec/#{slice}/view_spec.rb", t("view_spec.erb", context))
           fs.write("spec/#{slice}/repository_spec.rb", t("repository_spec.erb", context))
