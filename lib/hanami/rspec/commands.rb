@@ -20,7 +20,7 @@ module Hanami
         class Slice < Hanami::CLI::Command
           # FIXME: dry-cli kwargs aren't correctly forwarded in Ruby 3
           def call(options, **)
-            slice = inflector.underscore(Shellwords.shellescape(options[:slice]))
+            slice = inflector.underscore(Shellwords.shellescape(options[:name]))
 
             out.puts "generating #{slice} (rspec)"
             generator = Generators::Slice.new(fs: fs, inflector: inflector)
