@@ -4,7 +4,7 @@ RSpec.describe Hanami::RSpec::Commands::Install do
   describe "#call" do
     subject { described_class.new(fs: fs) }
 
-    let(:fs) { instance_double(Dry::CLI::Utils::Files) }
+    let(:fs) { instance_double(Dry::Files) }
 
     let(:helper_directory) do
       File.expand_path(

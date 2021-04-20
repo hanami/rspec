@@ -4,7 +4,7 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Slice do
   describe "#call" do
     subject { described_class.new(fs: fs, inflector: inflector) }
 
-    let(:fs) { Dry::CLI::Utils::Files.new(memory: true) }
+    let(:fs) { Dry::Files.new(memory: true) }
     let(:inflector) { Dry::Inflector.new }
     let(:slice) { "main" }
 
