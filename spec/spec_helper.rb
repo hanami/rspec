@@ -23,4 +23,4 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 end
 
-Dir.glob("#{__dir__}/support/**/*.rb").sort.each(&method(:require))
+Dir.glob("#{__dir__}/support/**/*.rb").each(&method(:require))

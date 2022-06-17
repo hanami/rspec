@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description   = "Hanami RSpec generators and Rake tasks"
   spec.homepage      = "https://hanamirb.org"
   spec.license       = "MIT"
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.6.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 3.0.0")
 
   spec.metadata["allowed_push_host"] = "https://rubygems.org"
 
@@ -29,9 +29,10 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "hanami-cli", "2.0.0.alpha1"
+  spec.add_dependency "hanami-cli", "~> 2.0.0.alpha"
   spec.add_dependency "rspec", "~> 3.9"
   spec.add_dependency "rake", "~> 13.0"
 
   spec.add_development_dependency "rubocop", "~> 1.11"
+  spec.metadata["rubygems_mfa_required"] = "true"
 end
