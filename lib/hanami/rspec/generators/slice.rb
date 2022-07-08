@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "erb"
-require "hanami/cli/generators/application/slice_context"
+require "hanami/cli/generators/app/slice_context"
 
 module Hanami
   module RSpec
@@ -12,7 +12,7 @@ module Hanami
           @inflector = inflector
         end
 
-        def call(slice, context: Hanami::CLI::Generators::Application::SliceContext.new(inflector, nil, slice, nil)) # rubocop:disable Metrics/AbcSize
+        def call(slice, context: Hanami::CLI::Generators::App::SliceContext.new(inflector, nil, slice, nil)) # rubocop:disable Metrics/AbcSize
           fs.write("spec/#{slice}/action_spec.rb", t("action_spec.erb", context))
           fs.write("spec/#{slice}/view_spec.rb", t("view_spec.erb", context))
           fs.write("spec/#{slice}/repository_spec.rb", t("repository_spec.erb", context))
