@@ -32,8 +32,7 @@ module Hanami
   end
 end
 
-# FIXME: define hanami-cli public API
-if Hanami.app?
+if Hanami::CLI.within_hanami_app?
   Hanami::CLI.after "install", Hanami::RSpec::Commands::Install
   # Hanami::CLI.after "generate slice", Hanami::RSpec::Commands::Generate::Slice
 end
