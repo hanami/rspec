@@ -1,39 +1,110 @@
 # frozen_string_literal: true
 
+require "hanami/rspec/commands"
+require "tmpdir"
+
 RSpec.describe Hanami::RSpec::Commands::Install do
   describe "#call" do
     subject { described_class.new(fs: fs) }
 
-    let(:fs) { instance_double(Dry::Files) }
+    let(:fs) { Dry::Files.new }
+    let(:dir) { Dir.mktmpdir }
+    let(:app) { "synth" }
+    let(:app_name) { "Synth" }
 
-    let(:helper_directory) do
-      File.expand_path(
-        File.join(__dir__, "..", "..", "..", "..", "..", "lib", "hanami", "rspec")
-      )
+    around do |example|
+      fs.chdir(dir) { example.run }
+    ensure
+      fs.delete_directory(dir)
     end
-    let(:helper_file) { "helper.rb" }
 
-    let(:source_path) { File.join(helper_directory, helper_file) }
-    let(:destination_path) { File.join("spec", "spec_helper.rb") }
-    let(:destination_absolute_path) { File.join(Dir.pwd, destination_path) }
+    it "copies a .rspec and spec helper" do
+      subject.call(app: app)
 
-    it "creates a spec helper" do
-      expect(fs).to receive(:cp)
-        .with(source_path, destination_absolute_path)
+      # Gemfile
+      gemfile = <<~EOF
+        group :test do
+          gem "capybara"
+        end
+      EOF
+      expect(fs.read("Gemfile")).to include(gemfile)
 
-      expect(fs).to receive(:expand_path)
-        .with(helper_file, helper_directory)
-        .and_return(source_path)
+      # .rspec
+      dotrspec = <<~EOF
+        --require spec_helper
+      EOF
+      expect(fs.read(".rspec")).to eq(dotrspec)
 
-      expect(fs).to receive(:join)
-        .with("spec", "spec_helper.rb")
-        .and_return(destination_path)
+      # spec/spec_helper.rb
+      spec_helper = <<~EOF
+        # frozen_string_literal: true
 
-      expect(fs).to receive(:expand_path)
-        .with("spec/spec_helper.rb")
-        .and_return(destination_absolute_path)
+        require "pathname"
+        SPEC_ROOT = Pathname(__dir__).realpath.freeze
 
-      subject.call
+        require "hanami/prepare"
+
+        require_relative "support/rspec"
+        require_relative "support/features"
+      EOF
+      expect(fs.read("spec/spec_helper.rb")).to eq(spec_helper)
+
+      # spec/support/rspec.rb
+      support_rspec = <<~EOF
+        # frozen_string_literal: true
+
+        RSpec.configure do |config|
+          config.expect_with :rspec do |expectations|
+            expectations.include_chain_clauses_in_custom_matcher_descriptions = true
+          end
+
+          config.mock_with :rspec do |mocks|
+            mocks.verify_partial_doubles = true
+          end
+
+          config.shared_context_metadata_behavior = :apply_to_host_groups
+
+          config.filter_run_when_matching :focus
+
+          config.disable_monkey_patching!
+          config.warnings = true
+
+          if config.files_to_run.one?
+            config.default_formatter = "doc"
+          end
+
+          config.profile_examples = 10
+
+          config.order = :random
+          Kernel.srand config.seed
+        end
+      EOF
+      expect(fs.read("spec/support/rspec.rb")).to eq(support_rspec)
+
+      # spec/support/features.rb
+      support_features = <<~EOF
+        # frozen_string_literal: true
+
+        require "capybara/rspec"
+
+        Capybara.app = Hanami.app
+        Capybara.server = :puma, {Silent: true}
+      EOF
+      expect(fs.read("spec/support/features.rb")).to eq(support_features)
+
+      # spec/features/home_spec.rb
+      support_features = <<~EOF
+        # frozen_string_literal: true
+
+        RSpec.feature "Visit the home page" do
+          scenario "It shows the page title" do
+            visit "/"
+
+            expect(page).to have_title "\#{app_name}"
+          end
+        end
+      EOF
+      expect(fs.read("spec/features/home_spec.rb")).to eq(support_features)
     end
   end
 end
