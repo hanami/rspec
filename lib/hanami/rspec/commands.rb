@@ -2,6 +2,7 @@
 
 require "hanami/cli"
 require "shellwords"
+require "hanami/cli/generators/context"
 require_relative "./generators"
 
 module Hanami
