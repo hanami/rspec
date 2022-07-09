@@ -6,4 +6,4 @@ SPEC_ROOT = Pathname(__dir__).realpath.freeze
 require "hanami/prepare"
 
 require_relative "support/rspec"
-require_relative "support/features"
+require_relative "support/requests"

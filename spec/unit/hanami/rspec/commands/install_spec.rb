@@ -19,12 +19,12 @@ RSpec.describe Hanami::RSpec::Commands::Install do
     end
 
     it "copies a .rspec and spec helper" do
-      subject.call(app: app)
+      subject.call
 
       # Gemfile
       gemfile = <<~EOF
         group :test do
-          gem "capybara"
+          gem "rack-test"
         end
       EOF
       expect(fs.read("Gemfile")).to include(gemfile)
@@ -45,7 +45,7 @@ RSpec.describe Hanami::RSpec::Commands::Install do
         require "hanami/prepare"
 
         require_relative "support/rspec"
-        require_relative "support/features"
+        require_relative "support/requests"
       EOF
       expect(fs.read("spec/spec_helper.rb")).to eq(spec_helper)
 
@@ -81,30 +81,36 @@ RSpec.describe Hanami::RSpec::Commands::Install do
       EOF
       expect(fs.read("spec/support/rspec.rb")).to eq(support_rspec)
 
-      # spec/support/features.rb
-      support_features = <<~EOF
+      # spec/support/requests.rb
+      support_requests = <<~EOF
         # frozen_string_literal: true
 
-        require "capybara/rspec"
+        require "rack/test"
 
-        Capybara.app = Hanami.app
-        Capybara.server = :puma, {Silent: true}
+        RSpec.shared_context "Hanami app" do
+          let(:app) { Hanami.app }
+        end
+
+        RSpec.configure do |config|
+          config.include Rack::Test::Methods, type: :request
+          config.include_context "Hanami app", type: :request
+        end
       EOF
-      expect(fs.read("spec/support/features.rb")).to eq(support_features)
+      expect(fs.read("spec/support/requests.rb")).to eq(support_requests)
 
-      # spec/features/home_spec.rb
-      support_features = <<~EOF
+      # spec/requests/root_spec.rb
+      request_spec = <<~EOF
         # frozen_string_literal: true
 
-        RSpec.feature "Visit the home page" do
-          scenario "It shows the page title" do
-            visit "/"
+        RSpec.describe "Root", type: :request do
+          it "is successful" do
+            get "/"
 
-            expect(page).to have_title "\#{app_name}"
+            expect(last_response).to be_successful
           end
         end
       EOF
-      expect(fs.read("spec/features/home_spec.rb")).to eq(support_features)
+      expect(fs.read("spec/requests/root_spec.rb")).to eq(request_spec)
     end
   end
 end

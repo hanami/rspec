@@ -9,16 +9,14 @@ module Hanami
   module RSpec
     module Commands
       class Install < Hanami::CLI::Command
-        def call(app:, **)
-          ctx = Hanami::CLI::Generators::Context.new(inflector, app)
-
+        def call(**)
           append_gemfile
           copy_dotrspec
           copy_spec_helper
           copy_support_rspec
-          copy_support_features
+          copy_support_requests
 
-          generate_feature(ctx)
+          generate_request_spec
         end
 
         private
@@ -53,29 +51,19 @@ module Hanami
           )
         end
 
-        def copy_support_features
+        def copy_support_requests
           fs.cp(
-            fs.expand_path(fs.join("generators", "support_features.rb"), __dir__),
-            fs.expand_path(fs.join("spec", "support", "features.rb"))
+            fs.expand_path(fs.join("generators", "support_requests.rb"), __dir__),
+            fs.expand_path(fs.join("spec", "support", "requests.rb"))
           )
         end
 
-        def generate_feature(ctx)
-          fs.write(
-            fs.join("spec", "features", "home_spec.rb"),
-            t(fs.expand_path(fs.join("generators", "feature.erb"), __dir__), ctx)
+        def generate_request_spec
+          fs.cp(
+            fs.expand_path(fs.join("generators", "request.rb"), __dir__),
+            fs.expand_path(fs.join("spec", "requests", "root_spec.rb"))
           )
         end
-
-        def template(path, context)
-          require "erb"
-
-          ERB.new(
-            fs.read(path)
-          ).result(context.ctx)
-        end
-
-        alias_method :t, :template
       end
 
       module Generate
