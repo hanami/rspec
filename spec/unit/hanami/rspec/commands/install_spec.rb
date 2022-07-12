@@ -1,39 +1,116 @@
 # frozen_string_literal: true
 
+require "hanami/rspec/commands"
+require "tmpdir"
+
 RSpec.describe Hanami::RSpec::Commands::Install do
   describe "#call" do
     subject { described_class.new(fs: fs) }
 
-    let(:fs) { instance_double(Dry::Files) }
+    let(:fs) { Dry::Files.new }
+    let(:dir) { Dir.mktmpdir }
+    let(:app) { "synth" }
+    let(:app_name) { "Synth" }
 
-    let(:helper_directory) do
-      File.expand_path(
-        File.join(__dir__, "..", "..", "..", "..", "..", "lib", "hanami", "rspec")
-      )
+    around do |example|
+      fs.chdir(dir) { example.run }
+    ensure
+      fs.delete_directory(dir)
     end
-    let(:helper_file) { "helper.rb" }
 
-    let(:source_path) { File.join(helper_directory, helper_file) }
-    let(:destination_path) { File.join("spec", "spec_helper.rb") }
-    let(:destination_absolute_path) { File.join(Dir.pwd, destination_path) }
-
-    it "creates a spec helper" do
-      expect(fs).to receive(:cp)
-        .with(source_path, destination_absolute_path)
-
-      expect(fs).to receive(:expand_path)
-        .with(helper_file, helper_directory)
-        .and_return(source_path)
-
-      expect(fs).to receive(:join)
-        .with("spec", "spec_helper.rb")
-        .and_return(destination_path)
-
-      expect(fs).to receive(:expand_path)
-        .with("spec/spec_helper.rb")
-        .and_return(destination_absolute_path)
-
+    it "copies a .rspec and spec helper" do
       subject.call
+
+      # Gemfile
+      gemfile = <<~EOF
+        group :test do
+          gem "rack-test"
+        end
+      EOF
+      expect(fs.read("Gemfile")).to include(gemfile)
+
+      # .rspec
+      dotrspec = <<~EOF
+        --require spec_helper
+      EOF
+      expect(fs.read(".rspec")).to eq(dotrspec)
+
+      # spec/spec_helper.rb
+      spec_helper = <<~EOF
+        # frozen_string_literal: true
+
+        require "pathname"
+        SPEC_ROOT = Pathname(__dir__).realpath.freeze
+
+        require "hanami/prepare"
+
+        require_relative "support/rspec"
+        require_relative "support/requests"
+      EOF
+      expect(fs.read("spec/spec_helper.rb")).to eq(spec_helper)
+
+      # spec/support/rspec.rb
+      support_rspec = <<~EOF
+        # frozen_string_literal: true
+
+        RSpec.configure do |config|
+          config.expect_with :rspec do |expectations|
+            expectations.include_chain_clauses_in_custom_matcher_descriptions = true
+          end
+
+          config.mock_with :rspec do |mocks|
+            mocks.verify_partial_doubles = true
+          end
+
+          config.shared_context_metadata_behavior = :apply_to_host_groups
+
+          config.filter_run_when_matching :focus
+
+          config.disable_monkey_patching!
+          config.warnings = true
+
+          if config.files_to_run.one?
+            config.default_formatter = "doc"
+          end
+
+          config.profile_examples = 10
+
+          config.order = :random
+          Kernel.srand config.seed
+        end
+      EOF
+      expect(fs.read("spec/support/rspec.rb")).to eq(support_rspec)
+
+      # spec/support/requests.rb
+      support_requests = <<~EOF
+        # frozen_string_literal: true
+
+        require "rack/test"
+
+        RSpec.shared_context "Hanami app" do
+          let(:app) { Hanami.app }
+        end
+
+        RSpec.configure do |config|
+          config.include Rack::Test::Methods, type: :request
+          config.include_context "Hanami app", type: :request
+        end
+      EOF
+      expect(fs.read("spec/support/requests.rb")).to eq(support_requests)
+
+      # spec/requests/root_spec.rb
+      request_spec = <<~EOF
+        # frozen_string_literal: true
+
+        RSpec.describe "Root", type: :request do
+          it "is successful" do
+            get "/"
+
+            expect(last_response).to be_successful
+          end
+        end
+      EOF
+      expect(fs.read("spec/requests/root_spec.rb")).to eq(request_spec)
     end
   end
 end
