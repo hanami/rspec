@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "hanami-cli", "~> 2.0.0.alpha"
-  spec.add_dependency "rspec", "~> 3.9"
+  spec.add_dependency "rspec", "~> 3.11"
   spec.add_dependency "rake", "~> 13.0"
 
   spec.add_development_dependency "rubocop", "~> 1.11"

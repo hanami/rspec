@@ -1,28 +1,47 @@
-# Hanami::Rspec
+# Hanami::RSpec
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/hanami/rspec`. To experiment with that code, run `bin/console` for an interactive prompt.
+RSpec and testing support for [full-stack Hanami applications](`https://github.com/hanami/hanami`).
 
-TODO: Delete this and the text above, and describe your gem
+## Status
+
+[![Gem Version](https://badge.fury.io/rb/hanami-rspec.svg)](https://badge.fury.io/rb/hanami-rspec)
+[![CI](https://github.com/hanami/rspec/workflows/ci/badge.svg?branch=main)](https://github.com/hanami/rspec/actions?query=workflow%3Aci+branch%3Amain)
+[![Test Coverage](https://codecov.io/gh/hanami/rspec/branch/main/graph/badge.svg)](https://codecov.io/gh/hanami/rspec)
+[![Depfu](https://badges.depfu.com/badges/a8545fb67cf32a2c75b6227bc0821027/overview.svg)](https://depfu.com/github/hanami/rspec?project=Bundler)
+[![Inline Docs](http://inch-ci.org/github/hanami/rspec.svg)](http://inch-ci.org/github/hanami/rspec)
+
+## Version
+
+Versioning of this gem follows RSpec.
+
+## Contact
+
+- Home page: http://hanamirb.org
+- Mailing List: http://hanamirb.org/mailing-list
+- Bugs/Issues: https://github.com/hanami/rspec/issues
+- Support: http://stackoverflow.com/questions/tagged/hanami
+- Chat: http://chat.hanamirb.org
+
+## Rubies
+
+**Hanami::RSpec** supports Ruby (MRI) 3.0+
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'hanami-rspec'
+group :cli, :development, :test do
+  gem "hanami-rspec"
+end
 ```
 
 And then execute:
 
     $ bundle install
-
-Or install it yourself as:
-
-    $ gem install hanami-rspec
+    $ bundle exec hanami setup
 
 ## Usage
-
-TODO: Write usage instructions here
 
 ## Development
 
@@ -32,7 +51,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/jodosha/hanami-rspec. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/jodosha/hanami-rspec/blob/main/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/hanami/rspec. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/hanami/rspec/blob/main/CODE_OF_CONDUCT.md).
 
 ## License
 
@@ -40,4 +59,8 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Hanami::Rspec project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/jodosha/hanami-rspec/blob/main/CODE_OF_CONDUCT.md).
+Everyone interacting in the `Hanami::RSpec` project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/hanami/rspec/blob/main/CODE_OF_CONDUCT.md).
+
+## Copyright
+
+Copyright © 2014-2022 Hanami Team – Released under MIT License
