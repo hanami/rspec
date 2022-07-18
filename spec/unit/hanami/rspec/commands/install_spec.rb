@@ -12,6 +12,8 @@ RSpec.describe Hanami::RSpec::Commands::Install do
     let(:app) { "synth" }
     let(:app_name) { "Synth" }
 
+    let(:arbitrary_argument) { {} }
+
     around do |example|
       fs.chdir(dir) { example.run }
     ensure
@@ -19,7 +21,7 @@ RSpec.describe Hanami::RSpec::Commands::Install do
     end
 
     it "copies a .rspec and spec helper" do
-      subject.call
+      subject.call(arbitrary_argument)
 
       # Gemfile
       gemfile = <<~EOF

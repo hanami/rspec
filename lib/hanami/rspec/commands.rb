@@ -9,7 +9,7 @@ module Hanami
   module RSpec
     module Commands
       class Install < Hanami::CLI::Command
-        def call(**)
+        def call(*, **)
           append_gemfile
           copy_dotrspec
           copy_spec_helper
