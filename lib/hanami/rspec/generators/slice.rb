@@ -12,17 +12,17 @@ module Hanami
           @inflector = inflector
         end
 
-        def call(slice, context: Hanami::CLI::Generators::App::SliceContext.new(inflector, nil, slice, nil)) # rubocop:disable Metrics/AbcSize
+        def call(slice, context: Hanami::CLI::Generators::App::SliceContext.new(inflector, nil, slice, nil))
           fs.write("spec/#{slice}/action_spec.rb", t("action_spec.erb", context))
-          fs.write("spec/#{slice}/view_spec.rb", t("view_spec.erb", context))
-          fs.write("spec/#{slice}/repository_spec.rb", t("repository_spec.erb", context))
+          # fs.write("spec/#{slice}/view_spec.rb", t("view_spec.erb", context))
+          # fs.write("spec/#{slice}/repository_spec.rb", t("repository_spec.erb", context))
 
           fs.write("spec/#{slice}/actions/.keep", t("keep.erb", context))
-          fs.write("spec/#{slice}/views/.keep", t("keep.erb", context))
-          fs.write("spec/#{slice}/templates/.keep", t("keep.erb", context))
-          fs.write("spec/#{slice}/templates/layouts/.keep", t("keep.erb", context))
-          fs.write("spec/#{slice}/entities/.keep", t("keep.erb", context))
-          fs.write("spec/#{slice}/repositories/.keep", t("keep.erb", context))
+          # fs.write("spec/#{slice}/views/.keep", t("keep.erb", context))
+          # fs.write("spec/#{slice}/templates/.keep", t("keep.erb", context))
+          # fs.write("spec/#{slice}/templates/layouts/.keep", t("keep.erb", context))
+          # fs.write("spec/#{slice}/entities/.keep", t("keep.erb", context))
+          # fs.write("spec/#{slice}/repositories/.keep", t("keep.erb", context))
         end
 
         private

@@ -72,7 +72,6 @@ module Hanami
           def call(options, **)
             slice = inflector.underscore(Shellwords.shellescape(options[:name]))
 
-            out.puts "generating #{slice} (rspec)"
             generator = Generators::Slice.new(fs: fs, inflector: inflector)
             generator.call(slice)
           end
@@ -84,5 +83,5 @@ end
 
 if Hanami::CLI.within_hanami_app?
   Hanami::CLI.after "install", Hanami::RSpec::Commands::Install
-  # Hanami::CLI.after "generate slice", Hanami::RSpec::Commands::Generate::Slice
+  Hanami::CLI.after "generate slice", Hanami::RSpec::Commands::Generate::Slice
 end
