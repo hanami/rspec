@@ -29,7 +29,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "hanami-cli", "~> 2.0.0.alpha"
+  spec.add_dependency "hanami-cli", "~> 2.0.0.beta"
   spec.add_dependency "rspec", "~> 3.11"
   spec.add_dependency "rake", "~> 13.0"
 
