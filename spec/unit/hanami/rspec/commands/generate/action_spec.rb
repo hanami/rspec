@@ -63,6 +63,27 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Action do
 
     context "slice" do
       let(:slice) { "main" }
+      let(:slice_name) { "Main" }
+
+      it "generates spec file" do
+        within_application_directory do
+          subject.call({slice: slice, name: action_name})
+
+          action_spec = <<~EXPECTED
+            # frozen_string_literal: true
+
+            RSpec.describe #{slice_name}::Actions::Client::Create do
+              let(:params) { Hash[] }
+
+              it "works" do
+                response = subject.call(params)
+                expect(response).to be_successful
+              end
+            end
+          EXPECTED
+          expect(fs.read("spec/#{slice}/actions/client/create_spec.rb")).to eq(action_spec)
+        end
+      end
     end
   end
 

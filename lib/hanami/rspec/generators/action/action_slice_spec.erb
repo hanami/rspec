@@ -1,0 +1,10 @@
+# frozen_string_literal: true
+
+RSpec.describe <%= classified_slice_name %>::Actions::<%= classified_controller_name %>::<%= classified_action_name %> do
+  let(:params) { Hash[] }
+
+  it "works" do
+    response = subject.call(params)
+    expect(response).to be_successful
+  end
+end

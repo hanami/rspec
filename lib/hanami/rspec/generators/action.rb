@@ -14,10 +14,13 @@ module Hanami
 
         def call(app, slice, controller, action, context: Hanami::CLI::Generators::App::ActionContext.new(inflector, app, slice, controller, action)) # rubocop:disable Layout/LineLength
           if slice
-            # TODO: implement
+            fs.write(
+              "spec/#{slice}/actions/#{controller_directory(controller)}/#{action}_spec.rb",
+              t("action_slice_spec.erb", context)
+            )
           else
             fs.write(
-              "spec/actions/#{controller.join(::File::SEPARATOR)}/#{action}_spec.rb",
+              "spec/actions/#{controller_directory(controller)}/#{action}_spec.rb",
               t("action_spec.erb", context)
             )
           end
@@ -28,6 +31,12 @@ module Hanami
         attr_reader :fs
 
         attr_reader :inflector
+
+        # @api private
+        # @param controller [Array<String>]
+        def controller_directory(controller)
+          fs.join(controller)
+        end
 
         def template(path, context)
           require "erb"
