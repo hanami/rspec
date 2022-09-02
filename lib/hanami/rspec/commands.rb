@@ -2,6 +2,7 @@
 
 require "hanami/cli"
 require "shellwords"
+require "hanami/cli/commands/app/command"
 require "hanami/cli/generators/context"
 require_relative "./generators"
 
@@ -76,6 +77,18 @@ module Hanami
             generator.call(slice)
           end
         end
+
+        class Action < Hanami::CLI::Commands::App::Command
+          # FIXME: dry-cli kwargs aren't correctly forwarded in Ruby 3
+          def call(options, **)
+            slice = inflector.underscore(Shellwords.shellescape(options[:slice])) if options[:slice]
+            name = inflector.underscore(Shellwords.shellescape(options[:name]))
+            *controller, action = name.split(ACTION_SEPARATOR)
+
+            generator = Generators::Action.new(fs: fs, inflector: inflector)
+            generator.call(app.namespace, slice, controller, action)
+          end
+        end
       end
     end
   end
@@ -84,4 +97,5 @@ end
 if Hanami::CLI.within_hanami_app?
   Hanami::CLI.after "install", Hanami::RSpec::Commands::Install
   Hanami::CLI.after "generate slice", Hanami::RSpec::Commands::Generate::Slice
+  Hanami::CLI.after "generate action", Hanami::RSpec::Commands::Generate::Action
 end
