@@ -15,7 +15,7 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Slice do
       action_spec = <<~EXPECTED
         # frozen_string_literal: true
 
-        RSpec.describe #{inflector.classify(slice)}::Action do
+        RSpec.describe #{inflector.camelize(slice)}::Action do
           xit "works"
         end
       EXPECTED
@@ -27,7 +27,7 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Slice do
       #
       #   require "slices/#{slice}/view"
       #
-      #   RSpec.describe #{inflector.classify(slice)}::View do
+      #   RSpec.describe #{inflector.camelize(slice)}::View do
       #   end
       # EXPECTED
       # expect(fs.read("spec/#{slice}/view_spec.rb")).to eq(view_spec)
@@ -38,7 +38,7 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Slice do
       #
       #   require "slices/#{slice}/repository"
       #
-      #   RSpec.describe #{inflector.classify(slice)}::Repository do
+      #   RSpec.describe #{inflector.camelize(slice)}::Repository do
       #   end
       # EXPECTED
       # expect(fs.read("spec/#{slice}/repository_spec.rb")).to eq(repository_spec)
