@@ -1,3 +1,10 @@
+## v3.11.0.beta3 - 2022-09-21
+
+### Added
+
+- [Luca Guidi] Hook into `hanami new` and `hanami generate` to respect name pluralization
+- [Luca Guidi] Hook into `hanami generate action` to generate action specs
+
 ## v3.11.0.beta2 - 2022-08-16
 
 ### Added
