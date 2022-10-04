@@ -81,7 +81,7 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Action do
               end
             end
           EXPECTED
-          expect(fs.read("spec/#{slice}/actions/client/create_spec.rb")).to eq(action_spec)
+          expect(fs.read("spec/slices/#{slice}/actions/client/create_spec.rb")).to eq(action_spec)
         end
       end
     end

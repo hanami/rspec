@@ -19,7 +19,7 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Slice do
           xit "works"
         end
       EXPECTED
-      expect(fs.read("spec/#{slice}/action_spec.rb")).to eq(action_spec)
+      expect(fs.read("spec/slices/#{slice}/action_spec.rb")).to eq(action_spec)
 
       # # spec/<slice>/view_spec.rb
       # view_spec = <<~EXPECTED
@@ -30,7 +30,7 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Slice do
       #   RSpec.describe #{inflector.camelize(slice)}::View do
       #   end
       # EXPECTED
-      # expect(fs.read("spec/#{slice}/view_spec.rb")).to eq(view_spec)
+      # expect(fs.read("spec/slices/#{slice}/view_spec.rb")).to eq(view_spec)
 
       # # spec/<slice>/repository_spec.rb
       # repository_spec = <<~EXPECTED
@@ -41,29 +41,29 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Slice do
       #   RSpec.describe #{inflector.camelize(slice)}::Repository do
       #   end
       # EXPECTED
-      # expect(fs.read("spec/#{slice}/repository_spec.rb")).to eq(repository_spec)
+      # expect(fs.read("spec/slices/#{slice}/repository_spec.rb")).to eq(repository_spec)
 
       # Keep file
       keep = <<~EXPECTED # rubocop:disable Style/EmptyHeredoc
       EXPECTED
 
       # spec/<slice>/actions/.keep
-      expect(fs.read("spec/#{slice}/actions/.keep")).to eq(keep)
+      expect(fs.read("spec/slices/#{slice}/actions/.keep")).to eq(keep)
       #
       # # spec/<slice>/views/.keep
-      # expect(fs.read("spec/#{slice}/views/.keep")).to eq(keep)
+      # expect(fs.read("spec/slices/#{slice}/views/.keep")).to eq(keep)
       #
       # # spec/<slice>/templates/.keep
-      # expect(fs.read("spec/#{slice}/templates/.keep")).to eq(keep)
+      # expect(fs.read("spec/slices/#{slice}/templates/.keep")).to eq(keep)
       #
       # # spec/<slice>/templates/layouts/.keep
-      # expect(fs.read("spec/#{slice}/templates/layouts/.keep")).to eq(keep)
+      # expect(fs.read("spec/slices/#{slice}/templates/layouts/.keep")).to eq(keep)
       #
       # # spec/<slice>/entities/.keep
-      # expect(fs.read("spec/#{slice}/entities/.keep")).to eq(keep)
+      # expect(fs.read("spec/slices/#{slice}/entities/.keep")).to eq(keep)
       #
       # # spec/<slice>/repositories/.keep
-      # expect(fs.read("spec/#{slice}/repositories/.keep")).to eq(keep)
+      # expect(fs.read("spec/slices/#{slice}/repositories/.keep")).to eq(keep)
     end
   end
 end

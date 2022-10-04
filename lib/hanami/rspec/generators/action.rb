@@ -15,7 +15,7 @@ module Hanami
         def call(app, slice, controller, action, context: Hanami::CLI::Generators::App::ActionContext.new(inflector, app, slice, controller, action)) # rubocop:disable Layout/LineLength
           if slice
             fs.write(
-              "spec/#{slice}/actions/#{controller_directory(controller)}/#{action}_spec.rb",
+              "spec/slices/#{slice}/actions/#{controller_directory(controller)}/#{action}_spec.rb",
               t("action_slice_spec.erb", context)
             )
           else

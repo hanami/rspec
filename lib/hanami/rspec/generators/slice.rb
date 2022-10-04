@@ -13,16 +13,16 @@ module Hanami
         end
 
         def call(slice, context: Hanami::CLI::Generators::App::SliceContext.new(inflector, nil, slice, nil))
-          fs.write("spec/#{slice}/action_spec.rb", t("action_spec.erb", context))
-          # fs.write("spec/#{slice}/view_spec.rb", t("view_spec.erb", context))
-          # fs.write("spec/#{slice}/repository_spec.rb", t("repository_spec.erb", context))
+          fs.write("spec/slices/#{slice}/action_spec.rb", t("action_spec.erb", context))
+          # fs.write("spec/slices/#{slice}/view_spec.rb", t("view_spec.erb", context))
+          # fs.write("spec/slices/#{slice}/repository_spec.rb", t("repository_spec.erb", context))
 
-          fs.write("spec/#{slice}/actions/.keep", t("keep.erb", context))
-          # fs.write("spec/#{slice}/views/.keep", t("keep.erb", context))
-          # fs.write("spec/#{slice}/templates/.keep", t("keep.erb", context))
-          # fs.write("spec/#{slice}/templates/layouts/.keep", t("keep.erb", context))
-          # fs.write("spec/#{slice}/entities/.keep", t("keep.erb", context))
-          # fs.write("spec/#{slice}/repositories/.keep", t("keep.erb", context))
+          fs.write("spec/slices/#{slice}/actions/.keep", t("keep.erb", context))
+          # fs.write("spec/slices/#{slice}/views/.keep", t("keep.erb", context))
+          # fs.write("spec/slices/#{slice}/templates/.keep", t("keep.erb", context))
+          # fs.write("spec/slices/#{slice}/templates/layouts/.keep", t("keep.erb", context))
+          # fs.write("spec/slices/#{slice}/entities/.keep", t("keep.erb", context))
+          # fs.write("spec/slices/#{slice}/repositories/.keep", t("keep.erb", context))
         end
 
         private
