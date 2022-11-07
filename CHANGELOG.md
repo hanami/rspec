@@ -1,3 +1,9 @@
+## v2.0.0.rc1 - 2022-11-08
+
+## Changed
+
+- [Luca Guidi] Follow `hanami` versioning
+
 ## v3.11.0.beta4 - 2022-10-24
 
 ## Changed

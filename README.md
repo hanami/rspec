@@ -8,10 +8,6 @@ RSpec and testing support for [full-stack Hanami applications](`https://github.c
 [![CI](https://github.com/hanami/rspec/workflows/ci/badge.svg?branch=main)](https://github.com/hanami/rspec/actions?query=workflow%3Aci+branch%3Amain)
 [![Depfu](https://badges.depfu.com/badges/a8545fb67cf32a2c75b6227bc0821027/overview.svg)](https://depfu.com/github/hanami/rspec?project=Bundler)
 
-## Version
-
-Versioning of this gem follows RSpec.
-
 ## Contact
 
 - Home page: http://hanamirb.org
