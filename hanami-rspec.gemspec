@@ -32,6 +32,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "hanami-cli", "~> 2.0.0.rc1"
   spec.add_dependency "rspec", "~> 3.11"
   spec.add_dependency "rake", "~> 13.0"
+  spec.add_dependency "zeitwerk", "~> 2.6"
 
   spec.add_development_dependency "rubocop", "~> 1.11"
   spec.metadata["rubygems_mfa_required"] = "true"

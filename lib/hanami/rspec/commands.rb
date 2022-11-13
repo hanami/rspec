@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
-require "hanami/cli"
 require "shellwords"
-require "hanami/cli/commands/app/command"
-require "hanami/cli/generators/context"
-require_relative "./generators"
 
 module Hanami
   module RSpec
@@ -92,10 +88,4 @@ module Hanami
       end
     end
   end
-end
-
-if Hanami::CLI.within_hanami_app?
-  Hanami::CLI.after "install", Hanami::RSpec::Commands::Install
-  Hanami::CLI.after "generate slice", Hanami::RSpec::Commands::Generate::Slice
-  Hanami::CLI.after "generate action", Hanami::RSpec::Commands::Generate::Action
 end

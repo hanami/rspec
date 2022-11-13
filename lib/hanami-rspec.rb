@@ -1,3 +1,3 @@
 # frozen_string_literal: true
 
-require_relative "./hanami/rspec"
+require_relative "hanami/rspec"
