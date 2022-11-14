@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "erb"
-require "hanami/cli/generators/app/action_context"
 
 module Hanami
   module RSpec

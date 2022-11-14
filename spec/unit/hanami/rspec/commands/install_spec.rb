@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "hanami/rspec/commands"
 require "tmpdir"
 
 RSpec.describe Hanami::RSpec::Commands::Install do
