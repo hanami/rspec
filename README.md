@@ -1,6 +1,6 @@
 # Hanami::RSpec
 
-RSpec and testing support for [full-stack Hanami applications](`https://github.com/hanami/hanami`).
+RSpec and testing support for [Hanami applications](https://github.com/hanami/hanami).
 
 ## Status
 
@@ -32,10 +32,10 @@ end
 
 And then execute:
 
-    $ bundle install
-    $ bundle exec hanami setup
-
-## Usage
+```
+$ bundle install
+$ bundle exec hanami setup
+```
 
 ## Development
 
