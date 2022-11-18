@@ -4,8 +4,14 @@ require "shellwords"
 
 module Hanami
   module RSpec
+    # @since 2.0.0
+    # @api private
     module Commands
+      # @since 2.0.0
+      # @api private
       class Install < Hanami::CLI::Command
+        # @since 2.0.0
+        # @api private
         def call(*, **)
           append_gemfile
           copy_dotrspec
@@ -63,7 +69,11 @@ module Hanami
         end
       end
 
+      # @since 2.0.0
+      # @api private
       module Generate
+        # @since 2.0.0
+        # @api private
         class Slice < Hanami::CLI::Command
           # FIXME: dry-cli kwargs aren't correctly forwarded in Ruby 3
           def call(options, **)
@@ -74,9 +84,13 @@ module Hanami
           end
         end
 
+        # @since 2.0.0
+        # @api private
         class Action < Hanami::CLI::Commands::App::Command
-          # FIXME: dry-cli kwargs aren't correctly forwarded in Ruby 3
+          # @since 2.0.0
+          # @api private
           def call(options, **)
+            # FIXME: dry-cli kwargs aren't correctly forwarded in Ruby 3
             slice = inflector.underscore(Shellwords.shellescape(options[:slice])) if options[:slice]
             name = inflector.underscore(Shellwords.shellescape(options[:name]))
             *controller, action = name.split(ACTION_SEPARATOR)
