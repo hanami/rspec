@@ -1,12 +1,23 @@
+# Hanami::RSpec
+
+RSpec support for Hanami
+
+## v2.0.0 - 2022-11-22
+
+### Added
+
+- [Tim Riley] Use Zeitwerk to autoload the gem
+- [Luca Guidi] Support RSpec 3.12
+
 ## v2.0.0.rc1 - 2022-11-08
 
-## Changed
+### Changed
 
 - [Luca Guidi] Follow `hanami` versioning
 
 ## v3.11.0.beta4 - 2022-10-24
 
-## Changed
+### Changed
 
 - [Luca Guidi] Generate slice specs under `spec/slices/[slice_name]/` (#9)
 
