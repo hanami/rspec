@@ -5,12 +5,18 @@ require "erb"
 module Hanami
   module RSpec
     module Generators
+      # @since 2.0.0
+      # @api private
       class Slice
+        # @since 2.0.0
+        # @api private
         def initialize(fs:, inflector:)
           @fs = fs
           @inflector = inflector
         end
 
+        # @since 2.0.0
+        # @api private
         def call(slice, context: Hanami::CLI::Generators::App::SliceContext.new(inflector, nil, slice, nil))
           fs.write("spec/slices/#{slice}/action_spec.rb", t("action_spec.erb", context))
           # fs.write("spec/slices/#{slice}/view_spec.rb", t("view_spec.erb", context))

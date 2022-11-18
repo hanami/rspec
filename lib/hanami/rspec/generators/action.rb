@@ -5,12 +5,18 @@ require "erb"
 module Hanami
   module RSpec
     module Generators
+      # @since 2.0.0
+      # @api private
       class Action
+        # @since 2.0.0
+        # @api private
         def initialize(fs:, inflector:)
           @fs = fs
           @inflector = inflector
         end
 
+        # @since 2.0.0
+        # @api private
         def call(app, slice, controller, action, context: Hanami::CLI::Generators::App::ActionContext.new(inflector, app, slice, controller, action)) # rubocop:disable Layout/LineLength
           if slice
             fs.write(

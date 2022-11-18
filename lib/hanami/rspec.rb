@@ -3,7 +3,13 @@
 require "hanami/cli"
 require "zeitwerk"
 
+# @see Hanami::RSpec
+# @since 2.0.0
 module Hanami
+  # RSpec and testing support for Hanami applications.
+  #
+  # @since 2.0.0
+  # @api private
   module RSpec
     # @since 2.0.0
     # @api private
