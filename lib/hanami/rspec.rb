@@ -17,11 +17,11 @@ module Hanami
       @gem_loader ||= Zeitwerk::Loader.new.tap do |loader|
         root = File.expand_path("..", __dir__)
         loader.tag = "hanami-rspec"
-        loader.inflector = Zeitwerk::GemInflector.new("#{root}/hanami-respec.rb")
+        loader.inflector = Zeitwerk::GemInflector.new("#{root}/hanami-rspec.rb")
         loader.push_dir(root)
         loader.ignore(
           "#{root}/hanami-rspec.rb",
-          "#{root}/hanami/rspec/version.rb"
+          "#{root}/hanami/rspec/{rake_tasks,version}.rb"
         )
         loader.inflector.inflect("rspec" => "RSpec")
       end
@@ -29,6 +29,7 @@ module Hanami
 
     gem_loader.setup
     require_relative "rspec/version"
+    require_relative "rspec/rake_tasks"
 
     if Hanami::CLI.within_hanami_app?
       Hanami::CLI.after "install", Commands::Install
