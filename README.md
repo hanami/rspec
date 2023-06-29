@@ -57,4 +57,4 @@ Everyone interacting in the `Hanami::RSpec` project's codebases, issue trackers,
 
 ## Copyright
 
-Copyright © 2014-2022 Hanami Team – Released under MIT License
+Copyright © 2014 Hanami Team – Released under MIT License

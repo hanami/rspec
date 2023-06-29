@@ -2,6 +2,8 @@
 
 RSpec support for Hanami
 
+## v2.1.0.beta1 - 2023-06-29
+
 ## v2.0.1 - 2022-12-25
 
 ### Added
