@@ -23,11 +23,23 @@ module Hanami
               "spec/slices/#{slice}/actions/#{controller_directory(controller)}/#{action}_spec.rb",
               t("action_slice_spec.erb", context)
             )
+            if context.bundled_views?
+              fs.write(
+                "spec/slices/#{slice}/views/#{controller_directory(controller)}/#{action}_spec.rb",
+                t("view_slice_spec.erb", context)
+              )
+            end
           else
             fs.write(
               "spec/actions/#{controller_directory(controller)}/#{action}_spec.rb",
               t("action_spec.erb", context)
             )
+            if context.bundled_views?
+              fs.write(
+                "spec/views/#{controller_directory(controller)}/#{action}_spec.rb",
+                t("view_spec.erb", context)
+              )
+            end
           end
         end
 
@@ -47,7 +59,8 @@ module Hanami
           require "erb"
 
           ERB.new(
-            File.read(__dir__ + "/action/#{path}")
+            File.read(__dir__ + "/action/#{path}"),
+            trim_mode: "-"
           ).result(context.ctx)
         end
 

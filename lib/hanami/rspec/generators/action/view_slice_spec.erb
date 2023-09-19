@@ -1,0 +1,9 @@
+# frozen_string_literal: true
+
+<%- view_name = "#{camelized_slice_name}::Views::#{camelized_controller_name}::#{camelized_action_name}" -%>
+RSpec.describe <%= view_name %> do
+  it "works" do
+    rendered = subject.call
+    expect(rendered).to match("<%= view_name %>")
+  end
+end
