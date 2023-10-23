@@ -35,6 +35,7 @@ module Hanami
       Hanami::CLI.after "install", Commands::Install
       Hanami::CLI.after "generate slice", Commands::Generate::Slice
       Hanami::CLI.after "generate action", Commands::Generate::Action
+      Hanami::CLI.after "generate part", Commands::Generate::Part
     end
   end
 end
