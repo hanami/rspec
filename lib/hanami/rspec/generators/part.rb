@@ -33,16 +33,16 @@ module Hanami
 
         private
 
+        # @since 2.1.0
+        # @api private
         attr_reader :fs
 
+        # @since 2.1.0
+        # @api private
         attr_reader :inflector
 
+        # @since 2.1.0
         # @api private
-        # @param controller [Array<String>]
-        def controller_directory(controller)
-          fs.join(controller)
-        end
-
         def template(path, context)
           require "erb"
 
@@ -51,6 +51,8 @@ module Hanami
           ).result(context.ctx)
         end
 
+        # @since 2.1.0
+        # @api private
         alias_method :t, :template
       end
     end

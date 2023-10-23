@@ -103,7 +103,7 @@ module Hanami
         # @since 2.1.0
         # @api private
         class Part < Hanami::CLI::Commands::App::Command
-          # @since 2.0.0
+          # @since 2.1.0
           # @api private
           def call(options, **)
             # FIXME: dry-cli kwargs aren't correctly forwarded in Ruby 3
