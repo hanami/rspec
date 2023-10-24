@@ -105,12 +105,12 @@ RSpec.describe Hanami::RSpec::Commands::Install do
         # frozen_string_literal: true
 
         RSpec.describe "Root", type: :request do
-          it "is successful" do
+          it "is not found" do
             get "/"
 
-            # Find me in `config/routes.rb`
-            expect(last_response).to be_successful
-            expect(last_response.body).to eq("Hello from Hanami")
+            # Generate new action via:
+            #   `bundle exec hanami generate action home.index --url=/`
+            expect(last_response.status).to be(404)
           end
         end
       EOF
