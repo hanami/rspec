@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe <%= camelized_app_name %>::Views::Parts::<%= camelized_name %> do
-<%- if ruby_implicity_keyword_argument? -%>
+<%- if ruby_omit_hash_values? -%>
   subject { described_class.new(value:) }
 <%- else -%>
   subject { described_class.new(value: value) }

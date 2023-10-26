@@ -20,7 +20,7 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Part do
           within_application_directory do
             subject.call({name: part_name})
 
-            if ruby_implicity_keyword_argument?
+            if ruby_omit_hash_values?
               base_part_spec = <<~EXPECTED
                 # frozen_string_literal: true
 
@@ -50,7 +50,7 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Part do
               expect(fs.read("spec/views/parts/client_spec.rb")).to eq(part_spec)
             end
 
-            unless ruby_implicity_keyword_argument?
+            unless ruby_omit_hash_values?
               base_part_spec = <<~EXPECTED
                 # frozen_string_literal: true
 
@@ -90,7 +90,7 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Part do
 
             subject.call({name: part_name})
 
-            if ruby_implicity_keyword_argument?
+            if ruby_omit_hash_values?
               <<~EXPECTED
                 # frozen_string_literal: true
 
@@ -133,7 +133,7 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Part do
           within_application_directory do
             subject.call({slice: slice, name: part_name})
 
-            if ruby_implicity_keyword_argument?
+            if ruby_omit_hash_values?
               base_part_spec = <<~EXPECTED
                 # frozen_string_literal: true
 
@@ -177,7 +177,7 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Part do
               expect(fs.read("spec/slices/#{slice}/views/parts/client_spec.rb")).to eq(part_spec)
             end
 
-            unless ruby_implicity_keyword_argument?
+            unless ruby_omit_hash_values?
               base_part_spec = <<~EXPECTED
                 # frozen_string_literal: true
 
@@ -232,7 +232,7 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Part do
 
             subject.call({slice: slice, name: part_name})
 
-            if ruby_implicity_keyword_argument?
+            if ruby_omit_hash_values?
               part_spec = <<~EXPECTED
                 # frozen_string_literal: true
 
@@ -304,7 +304,7 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Part do
     end
   end
 
-  def ruby_implicity_keyword_argument?
+  def ruby_omit_hash_values?
     RUBY_VERSION >= "3.1"
   end
 end
