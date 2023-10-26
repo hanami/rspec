@@ -88,7 +88,8 @@ module Hanami
           require "erb"
 
           ERB.new(
-            File.read(__dir__ + "/part/#{path}")
+            File.read(__dir__ + "/part/#{path}"),
+            trim_mode: "-"
           ).result(context.ctx)
         end
 

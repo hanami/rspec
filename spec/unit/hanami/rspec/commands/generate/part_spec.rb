@@ -20,27 +20,65 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Part do
           within_application_directory do
             subject.call({name: part_name})
 
-            base_part_spec = <<~EXPECTED
-              # frozen_string_literal: true
+            if ruby_implicity_keyword_argument?
+              base_part_spec = <<~EXPECTED
+                # frozen_string_literal: true
 
-              RSpec.describe #{app_name}::Views::Part do
-                it "works" do
-                  expect(subject).to be_kind_of(described_class)
+                RSpec.describe #{app_name}::Views::Part do
+                  subject { described_class.new(value:) }
+                  let(:value) { double("value") }
+
+                  it "works" do
+                    expect(subject).to be_kind_of(described_class)
+                  end
                 end
-              end
-            EXPECTED
-            expect(fs.read("spec/views/part_spec.rb")).to eq(base_part_spec)
+              EXPECTED
+              expect(fs.read("spec/views/part_spec.rb")).to eq(base_part_spec)
 
-            part_spec = <<~EXPECTED
-              # frozen_string_literal: true
+              part_spec = <<~EXPECTED
+                # frozen_string_literal: true
 
-              RSpec.describe #{app_name}::Views::Parts::Client do
-                it "works" do
-                  expect(subject).to be_kind_of(described_class)
+                RSpec.describe #{app_name}::Views::Parts::Client do
+                  subject { described_class.new(value:) }
+                  let(:value) { double("client") }
+
+                  it "works" do
+                    expect(subject).to be_kind_of(described_class)
+                  end
                 end
-              end
-            EXPECTED
-            expect(fs.read("spec/views/parts/client_spec.rb")).to eq(part_spec)
+              EXPECTED
+              expect(fs.read("spec/views/parts/client_spec.rb")).to eq(part_spec)
+            end
+
+            unless ruby_implicity_keyword_argument?
+              base_part_spec = <<~EXPECTED
+                # frozen_string_literal: true
+
+                RSpec.describe #{app_name}::Views::Part do
+                  subject { described_class.new(value: value) }
+                  let(:value) { double("value") }
+
+                  it "works" do
+                    expect(subject).to be_kind_of(described_class)
+                  end
+                end
+              EXPECTED
+              expect(fs.read("spec/views/part_spec.rb")).to eq(base_part_spec)
+
+              part_spec = <<~EXPECTED
+                # frozen_string_literal: true
+
+                RSpec.describe #{app_name}::Views::Parts::Client do
+                  subject { described_class.new(value: value) }
+                  let(:value) { double("client") }
+
+                  it "works" do
+                    expect(subject).to be_kind_of(described_class)
+                  end
+                end
+              EXPECTED
+              expect(fs.read("spec/views/parts/client_spec.rb")).to eq(part_spec)
+            end
           end
         end
       end
@@ -48,29 +86,39 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Part do
       context "with base part" do
         it "generates spec file" do
           within_application_directory do
-            base_part_spec = <<~EXPECTED
-              # frozen_string_literal: true
-
-              RSpec.describe #{app_name}::Views::Part do
-                it "works" do
-                  expect(subject).to be_kind_of(described_class)
-                end
-              end
-            EXPECTED
-            fs.write("spec/views/part_spec.rb", base_part_spec)
+            fs.touch("spec/views/part_spec.rb")
 
             subject.call({name: part_name})
 
-            part_spec = <<~EXPECTED
-              # frozen_string_literal: true
+            if ruby_implicity_keyword_argument?
+              <<~EXPECTED
+                # frozen_string_literal: true
 
-              RSpec.describe #{app_name}::Views::Parts::Client do
-                it "works" do
-                  expect(subject).to be_kind_of(described_class)
+                RSpec.describe #{app_name}::Views::Parts::Client do
+                  subject { described_class.new(value:) }
+                  let(:value) { double("client") }
+
+                  it "works" do
+                    expect(subject).to be_kind_of(described_class)
+                  end
                 end
-              end
-            EXPECTED
-            expect(fs.read("spec/views/parts/client_spec.rb")).to eq(part_spec)
+              EXPECTED
+            else
+              part_spec = <<~EXPECTED
+                # frozen_string_literal: true
+
+                RSpec.describe #{app_name}::Views::Parts::Client do
+                  subject { described_class.new(value: value) }
+                  let(:value) { double("client") }
+
+                  it "works" do
+                    expect(subject).to be_kind_of(described_class)
+                  end
+                end
+              EXPECTED
+
+              expect(fs.read("spec/views/parts/client_spec.rb")).to eq(part_spec)
+            end
           end
         end
       end
@@ -85,38 +133,93 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Part do
           within_application_directory do
             subject.call({slice: slice, name: part_name})
 
-            base_part_spec = <<~EXPECTED
-              # frozen_string_literal: true
+            if ruby_implicity_keyword_argument?
+              base_part_spec = <<~EXPECTED
+                # frozen_string_literal: true
 
-              RSpec.describe #{app_name}::Views::Part do
-                it "works" do
-                  expect(subject).to be_kind_of(described_class)
+                RSpec.describe #{app_name}::Views::Part do
+                  subject { described_class.new(value:) }
+                  let(:value) { double("value") }
+
+                  it "works" do
+                    expect(subject).to be_kind_of(described_class)
+                  end
                 end
-              end
-            EXPECTED
-            expect(fs.read("spec/views/part_spec.rb")).to eq(base_part_spec)
+              EXPECTED
+              expect(fs.read("spec/views/part_spec.rb")).to eq(base_part_spec)
 
-            base_slice_part_spec = <<~EXPECTED
-              # frozen_string_literal: true
+              base_slice_part_spec = <<~EXPECTED
+                # frozen_string_literal: true
 
-              RSpec.describe #{slice_name}::Views::Part do
-                it "works" do
-                  expect(subject).to be_kind_of(described_class)
+                RSpec.describe #{slice_name}::Views::Part do
+                  subject { described_class.new(value:) }
+                  let(:value) { double("value") }
+
+                  it "works" do
+                    expect(subject).to be_kind_of(described_class)
+                  end
                 end
-              end
-            EXPECTED
-            expect(fs.read("spec/slices/#{slice}/views/part_spec.rb")).to eq(base_slice_part_spec)
+              EXPECTED
+              expect(fs.read("spec/slices/#{slice}/views/part_spec.rb")).to eq(base_slice_part_spec)
 
-            part_spec = <<~EXPECTED
-              # frozen_string_literal: true
+              part_spec = <<~EXPECTED
+                # frozen_string_literal: true
 
-              RSpec.describe #{slice_name}::Views::Parts::Client do
-                it "works" do
-                  expect(subject).to be_kind_of(described_class)
+                RSpec.describe #{slice_name}::Views::Parts::Client do
+                  subject { described_class.new(value:) }
+                  let(:value) { double("client") }
+
+                  it "works" do
+                    expect(subject).to be_kind_of(described_class)
+                  end
                 end
-              end
-            EXPECTED
-            expect(fs.read("spec/slices/#{slice}/views/parts/client_spec.rb")).to eq(part_spec)
+              EXPECTED
+              expect(fs.read("spec/slices/#{slice}/views/parts/client_spec.rb")).to eq(part_spec)
+            end
+
+            unless ruby_implicity_keyword_argument?
+              base_part_spec = <<~EXPECTED
+                # frozen_string_literal: true
+
+                RSpec.describe #{app_name}::Views::Part do
+                  subject { described_class.new(value: value) }
+                  let(:value) { double("value") }
+
+                  it "works" do
+                    expect(subject).to be_kind_of(described_class)
+                  end
+                end
+              EXPECTED
+              expect(fs.read("spec/views/part_spec.rb")).to eq(base_part_spec)
+
+              base_slice_part_spec = <<~EXPECTED
+                # frozen_string_literal: true
+
+                RSpec.describe #{slice_name}::Views::Part do
+                  subject { described_class.new(value: value) }
+                  let(:value) { double("value") }
+
+                  it "works" do
+                    expect(subject).to be_kind_of(described_class)
+                  end
+                end
+              EXPECTED
+              expect(fs.read("spec/slices/#{slice}/views/part_spec.rb")).to eq(base_slice_part_spec)
+
+              part_spec = <<~EXPECTED
+                # frozen_string_literal: true
+
+                RSpec.describe #{slice_name}::Views::Parts::Client do
+                  subject { described_class.new(value: value) }
+                  let(:value) { double("client") }
+
+                  it "works" do
+                    expect(subject).to be_kind_of(described_class)
+                  end
+                end
+              EXPECTED
+              expect(fs.read("spec/slices/#{slice}/views/parts/client_spec.rb")).to eq(part_spec)
+            end
           end
         end
       end
@@ -124,39 +227,38 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Part do
       context "with base part" do
         it "generates spec file" do
           within_application_directory do
-            base_part_spec = <<~EXPECTED
-              # frozen_string_literal: true
-
-              RSpec.describe #{app_name}::Views::Part do
-                it "works" do
-                  expect(subject).to be_kind_of(described_class)
-                end
-              end
-            EXPECTED
-            fs.write("spec/views/part_spec.rb", base_part_spec)
-
-            base_slice_part_spec = <<~EXPECTED
-              # frozen_string_literal: true
-
-              RSpec.describe #{slice_name}::Views::Part do
-                it "works" do
-                  expect(subject).to be_kind_of(described_class)
-                end
-              end
-            EXPECTED
-            fs.write("spec/slices/#{slice}/views/part_spec.rb", base_slice_part_spec)
+            fs.touch("spec/views/part_spec.rb")
+            fs.touch("spec/slices/#{slice}/views/part_spec.rb")
 
             subject.call({slice: slice, name: part_name})
 
-            part_spec = <<~EXPECTED
-              # frozen_string_literal: true
+            if ruby_implicity_keyword_argument?
+              part_spec = <<~EXPECTED
+                # frozen_string_literal: true
 
-              RSpec.describe #{slice_name}::Views::Parts::Client do
-                it "works" do
-                  expect(subject).to be_kind_of(described_class)
+                RSpec.describe #{slice_name}::Views::Parts::Client do
+                  subject { described_class.new(value:) }
+                  let(:value) { double("client") }
+
+                  it "works" do
+                    expect(subject).to be_kind_of(described_class)
+                  end
                 end
-              end
-            EXPECTED
+              EXPECTED
+            else
+              part_spec = <<~EXPECTED
+                # frozen_string_literal: true
+
+                RSpec.describe #{slice_name}::Views::Parts::Client do
+                  subject { described_class.new(value: value) }
+                  let(:value) { double("client") }
+
+                  it "works" do
+                    expect(subject).to be_kind_of(described_class)
+                  end
+                end
+              EXPECTED
+            end
             expect(fs.read("spec/slices/#{slice}/views/parts/client_spec.rb")).to eq(part_spec)
           end
         end
@@ -200,5 +302,9 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Part do
 
       yield
     end
+  end
+
+  def ruby_implicity_keyword_argument?
+    RUBY_VERSION >= "3.1"
   end
 end

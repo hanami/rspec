@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 RSpec.describe <%= camelized_app_name %>::Views::Part do
+<%- if ruby_implicity_keyword_argument? -%>
+  subject { described_class.new(value:) }
+<%- else -%>
+  subject { described_class.new(value: value) }
+<%- end -%>
+  let(:value) { double("value") }
+
   it "works" do
     expect(subject).to be_kind_of(described_class)
   end
