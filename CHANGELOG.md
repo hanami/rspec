@@ -2,6 +2,16 @@
 
 RSpec support for Hanami
 
+## v2.1.0.rc1 - 2023-11-01
+
+### Added
+
+- [Luca Guidi] Generate spec for `hanami generate part` command
+
+### Changed
+
+- [Luca Guidi] Default request spec to expect 404, now that `hanami new` doesn't generate a default root route anymore
+
 ## v2.1.0.beta1 - 2023-06-29
 
 ## v2.0.1 - 2022-12-25
