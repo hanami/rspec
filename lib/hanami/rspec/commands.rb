@@ -99,6 +99,21 @@ module Hanami
             generator.call(app.namespace, slice, controller, action)
           end
         end
+
+        # @since 2.1.0
+        # @api private
+        class Part < Hanami::CLI::Commands::App::Command
+          # @since 2.1.0
+          # @api private
+          def call(options, **)
+            # FIXME: dry-cli kwargs aren't correctly forwarded in Ruby 3
+            slice = inflector.underscore(Shellwords.shellescape(options[:slice])) if options[:slice]
+            name = inflector.underscore(Shellwords.shellescape(options[:name]))
+
+            generator = Generators::Part.new(fs: fs, inflector: inflector)
+            generator.call(app.namespace, slice, name)
+          end
+        end
       end
     end
   end

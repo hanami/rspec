@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 require "hanami/rspec"
+require "fileutils"
+
+TMP = File.join(Dir.pwd, "tmp")
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
@@ -9,6 +12,10 @@ RSpec.configure do |config|
 
   config.mock_with :rspec do |mocks|
     mocks.verify_partial_doubles = true
+  end
+
+  config.after do
+    FileUtils.rm_rf(TMP) if File.directory?(TMP)
   end
 
   config.shared_context_metadata_behavior = :apply_to_host_groups
@@ -28,5 +35,3 @@ RSpec.configure do |config|
 
   Kernel.srand config.seed
 end
-
-TMP = File.join(Dir.pwd, "tmp")
