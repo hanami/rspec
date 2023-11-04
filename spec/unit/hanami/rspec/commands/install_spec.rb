@@ -25,6 +25,7 @@ RSpec.describe Hanami::RSpec::Commands::Install do
       # Gemfile
       gemfile = <<~EOF
         group :test do
+          gem "capybara"
           gem "rack-test"
         end
       EOF
@@ -47,6 +48,7 @@ RSpec.describe Hanami::RSpec::Commands::Install do
         require "hanami/prepare"
 
         require_relative "support/rspec"
+        require_relative "support/features"
         require_relative "support/requests"
       EOF
       expect(fs.read("spec/spec_helper.rb")).to eq(spec_helper)
@@ -82,6 +84,16 @@ RSpec.describe Hanami::RSpec::Commands::Install do
         end
       EOF
       expect(fs.read("spec/support/rspec.rb")).to eq(support_rspec)
+
+      # spec/support/features.rb
+      support_features = <<~EOF
+        # frozen_string_literal: true
+
+        require "capybara/rspec"
+
+        Capybara.app = Hanami.app
+      EOF
+      expect(fs.read("spec/support/features.rb")).to eq(support_features)
 
       # spec/support/requests.rb
       support_requests = <<~EOF

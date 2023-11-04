@@ -17,6 +17,7 @@ module Hanami
           copy_dotrspec
           copy_spec_helper
           copy_support_rspec
+          copy_support_features
           copy_support_requests
 
           generate_request_spec
@@ -51,6 +52,13 @@ module Hanami
           fs.cp(
             fs.expand_path(fs.join("generators", "support_rspec.rb"), __dir__),
             fs.expand_path(fs.join("spec", "support", "rspec.rb"))
+          )
+        end
+
+        def copy_support_features
+          fs.cp(
+            fs.expand_path(fs.join("generators", "support_features.rb"), __dir__),
+            fs.expand_path(fs.join("spec", "support", "features.rb"))
           )
         end
 
