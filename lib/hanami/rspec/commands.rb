@@ -14,6 +14,7 @@ module Hanami
         # @api private
         def call(*, **)
           append_gemfile
+          append_gitignore
           copy_dotrspec
           copy_spec_helper
           copy_support_rspec
@@ -27,9 +28,14 @@ module Hanami
         def append_gemfile
           fs.append(
             fs.expand_path("Gemfile"),
-            fs.read(
-              fs.expand_path(fs.join("generators", "gemfile"), __dir__)
-            ),
+            fs.read(fs.expand_path(fs.join("generators", "gemfile"), __dir__))
+          )
+        end
+
+        def append_gitignore
+          fs.append(
+            fs.expand_path(".gitignore"),
+            fs.read(fs.expand_path(fs.join("generators", "gitignore"), __dir__))
           )
         end
 
