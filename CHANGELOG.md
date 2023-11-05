@@ -2,6 +2,10 @@
 
 RSpec support for Hanami
 
+### Changed
+
+- [Tim Riley] Add explanatory code comments to `spec/support/rspec.rb` generated in `hanami install` hook.
+
 ## v2.1.0.rc1 - 2023-11-01
 
 ### Added
