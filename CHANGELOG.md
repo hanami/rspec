@@ -2,6 +2,10 @@
 
 RSpec support for Hanami
 
+### Added
+
+- [Tim Riley] Install Capybara and generate `spec/support/capybara.rb` in `hanami install` hook.
+
 ## v2.1.0.rc1 - 2023-11-01
 
 ### Added
