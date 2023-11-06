@@ -33,9 +33,9 @@ RSpec.configure do |config|
   # configure your source control system to ignore this file.
   config.example_status_persistence_file_path = "spec/examples.txt"
 
-  # Enable warnings. This is recommended, but in some cases may be too noisy due
-  # to issues in dependencies.
-  config.warnings = true
+  # Uncomment this to enable warnings. This is recommended, but in some cases
+  # may be too noisy due to issues in dependencies.
+  # config.warnings = true
 
   # Show more verbose output when running an individual spec file.
   if config.files_to_run.one?
