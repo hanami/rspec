@@ -59,6 +59,16 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Action do
           end
         end
       end
+
+      context "skip_tests given" do
+        it "does not generate a spec file" do
+          within_application_directory do
+            subject.call({name: action_name, skip_tests: true})
+
+            expect(fs.exist?("spec/actions/client/create_spec.rb")).to be false
+          end
+        end
+      end
     end
 
     context "slice" do
@@ -82,6 +92,16 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Action do
             end
           EXPECTED
           expect(fs.read("spec/slices/#{slice}/actions/client/create_spec.rb")).to eq(action_spec)
+        end
+      end
+
+      context "skip_tests given" do
+        it "does not generate a spec file" do
+          within_application_directory do
+            subject.call({slice: slice, name: action_name, skip_tests: true})
+
+            expect(fs.exist?("spec/slices/#{slice}/actions/client/create_spec.rb")).to be false
+          end
         end
       end
     end
