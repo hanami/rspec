@@ -14,9 +14,11 @@ module Hanami
         # @api private
         def call(*, **)
           append_gemfile
+          append_gitignore
           copy_dotrspec
           copy_spec_helper
           copy_support_rspec
+          copy_support_features
           copy_support_requests
 
           generate_request_spec
@@ -27,9 +29,14 @@ module Hanami
         def append_gemfile
           fs.append(
             fs.expand_path("Gemfile"),
-            fs.read(
-              fs.expand_path(fs.join("generators", "gemfile"), __dir__)
-            ),
+            fs.read(fs.expand_path(fs.join("generators", "gemfile"), __dir__))
+          )
+        end
+
+        def append_gitignore
+          fs.append(
+            fs.expand_path(".gitignore"),
+            fs.read(fs.expand_path(fs.join("generators", "gitignore"), __dir__))
           )
         end
 
@@ -51,6 +58,13 @@ module Hanami
           fs.cp(
             fs.expand_path(fs.join("generators", "support_rspec.rb"), __dir__),
             fs.expand_path(fs.join("spec", "support", "rspec.rb"))
+          )
+        end
+
+        def copy_support_features
+          fs.cp(
+            fs.expand_path(fs.join("generators", "support_features.rb"), __dir__),
+            fs.expand_path(fs.join("spec", "support", "features.rb"))
           )
         end
 

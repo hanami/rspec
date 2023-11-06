@@ -4,7 +4,12 @@ RSpec support for Hanami
 
 ### Added
 
-- [Tim Riley] Skip generating tests for actions and parts when `--skip-tests` CLI flag is given
+- [Tim Riley] Skip generating tests for actions and parts when `--skip-tests` CLI flag is given.
+- [Tim Riley] Install Capybara and generate `spec/support/capybara.rb` in `hanami install` hook.
+
+### Changed
+
+- [Tim Riley] Add explanatory code comments to `spec/support/rspec.rb` generated in `hanami install` hook.
 
 ## v2.1.0.rc1 - 2023-11-01
 
