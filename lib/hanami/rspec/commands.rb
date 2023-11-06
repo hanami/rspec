@@ -105,6 +105,9 @@ module Hanami
           # @api private
           def call(options, **)
             # FIXME: dry-cli kwargs aren't correctly forwarded in Ruby 3
+
+            return if options[:skip_tests]
+
             slice = inflector.underscore(Shellwords.shellescape(options[:slice])) if options[:slice]
             name = inflector.underscore(Shellwords.shellescape(options[:name]))
             *controller, action = name.split(ACTION_SEPARATOR)
@@ -121,6 +124,9 @@ module Hanami
           # @api private
           def call(options, **)
             # FIXME: dry-cli kwargs aren't correctly forwarded in Ruby 3
+
+            return if options[:skip_tests]
+
             slice = inflector.underscore(Shellwords.shellescape(options[:slice])) if options[:slice]
             name = inflector.underscore(Shellwords.shellescape(options[:name]))
 

@@ -122,6 +122,16 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Part do
           end
         end
       end
+
+      context "skip_tests given" do
+        it "does not generate spec file" do
+          within_application_directory do
+            subject.call({name: part_name, skip_tests: true})
+
+            expect(fs.exist?("spec/views/parts/client_spec.rb")).to be false
+          end
+        end
+      end
     end
 
     context "slice" do
@@ -260,6 +270,16 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Part do
               EXPECTED
             end
             expect(fs.read("spec/slices/#{slice}/views/parts/client_spec.rb")).to eq(part_spec)
+          end
+        end
+      end
+
+      context "skip_tests given" do
+        it "does not generate spec file" do
+          within_application_directory do
+            subject.call({slice: slice, name: part_name, skip_tests: true})
+
+            expect(fs.exist?("spec/slices/#{slice}/views/parts/client_spec.rb")).to be false
           end
         end
       end
