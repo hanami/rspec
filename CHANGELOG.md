@@ -2,6 +2,10 @@
 
 RSpec support for Hanami
 
+### Added
+
+- [Tim Riley] Install Capybara and generate `spec/support/capybara.rb` in `hanami install` hook.
+
 ### Changed
 
 - [Tim Riley] Add explanatory code comments to `spec/support/rspec.rb` generated in `hanami install` hook.
