@@ -129,13 +129,14 @@ RSpec.describe Hanami::RSpec::Commands::Install do
 
         require "rack/test"
 
-        RSpec.shared_context "Hanami app" do
+        RSpec.shared_context "Rack::Test" do
+          # Define the app for Rack::Test requests
           let(:app) { Hanami.app }
         end
 
         RSpec.configure do |config|
           config.include Rack::Test::Methods, type: :request
-          config.include_context "Hanami app", type: :request
+          config.include_context "Rack::Test", type: :request
         end
       EOF
       expect(fs.read("spec/support/requests.rb")).to eq(support_requests)
