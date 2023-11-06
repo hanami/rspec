@@ -2,6 +2,10 @@
 
 RSpec support for Hanami
 
+### Added
+
+- [Tim Riley] Skip generating tests for actions and parts when `--skip-tests` CLI flag is given
+
 ## v2.1.0.rc1 - 2023-11-01
 
 ### Added
