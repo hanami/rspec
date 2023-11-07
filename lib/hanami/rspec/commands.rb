@@ -14,9 +14,11 @@ module Hanami
         # @api private
         def call(*, **)
           append_gemfile
+          append_gitignore
           copy_dotrspec
           copy_spec_helper
           copy_support_rspec
+          copy_support_features
           copy_support_requests
 
           generate_request_spec
@@ -27,9 +29,14 @@ module Hanami
         def append_gemfile
           fs.append(
             fs.expand_path("Gemfile"),
-            fs.read(
-              fs.expand_path(fs.join("generators", "gemfile"), __dir__)
-            ),
+            fs.read(fs.expand_path(fs.join("generators", "gemfile"), __dir__))
+          )
+        end
+
+        def append_gitignore
+          fs.append(
+            fs.expand_path(".gitignore"),
+            fs.read(fs.expand_path(fs.join("generators", "gitignore"), __dir__))
           )
         end
 
@@ -51,6 +58,13 @@ module Hanami
           fs.cp(
             fs.expand_path(fs.join("generators", "support_rspec.rb"), __dir__),
             fs.expand_path(fs.join("spec", "support", "rspec.rb"))
+          )
+        end
+
+        def copy_support_features
+          fs.cp(
+            fs.expand_path(fs.join("generators", "support_features.rb"), __dir__),
+            fs.expand_path(fs.join("spec", "support", "features.rb"))
           )
         end
 
@@ -91,6 +105,9 @@ module Hanami
           # @api private
           def call(options, **)
             # FIXME: dry-cli kwargs aren't correctly forwarded in Ruby 3
+
+            return if options[:skip_tests]
+
             slice = inflector.underscore(Shellwords.shellescape(options[:slice])) if options[:slice]
             name = inflector.underscore(Shellwords.shellescape(options[:name]))
             *controller, action = name.split(ACTION_SEPARATOR)
@@ -107,6 +124,9 @@ module Hanami
           # @api private
           def call(options, **)
             # FIXME: dry-cli kwargs aren't correctly forwarded in Ruby 3
+
+            return if options[:skip_tests]
+
             slice = inflector.underscore(Shellwords.shellescape(options[:slice])) if options[:slice]
             name = inflector.underscore(Shellwords.shellescape(options[:name]))
 
