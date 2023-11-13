@@ -8,8 +8,9 @@ unless ENV["CI"]
   gem "yard",   require: false
 end
 
-gem "dry-files", require: false, git: "https://github.com/dry-rb/dry-files.git", branch: "main"
-gem "dry-logger", require: false, git: "https://github.com/dry-rb/dry-logger.git", branch: "main"
-gem "hanami-utils", require: false, git: "https://github.com/hanami/utils.git", branch: "main"
-gem "hanami-cli", require: false, git: "https://github.com/hanami/cli.git", branch: "main"
-gem "hanami", require: false, git: "https://github.com/hanami/hanami.git", branch: "main"
+gem "dry-files",  require: false, github: "dry-rb/dry-files", branch: "main"
+gem "dry-logger", require: false, github: "dry-rb/dry-logger", branch: "main"
+
+gem "hanami-utils", require: false, github: "hanami/utils", branch: "main"
+gem "hanami-cli",   require: false, github: "hanami/cli", branch: "main"
+gem "hanami",       require: false, github: "hanami/hanami", branch: "main"
