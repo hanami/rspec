@@ -2,6 +2,6 @@
 
 RSpec.describe "Hanami::RSpec::VERSION" do
   it "returns version" do
-    expect(Hanami::RSpec::VERSION).to eq("2.1.0")
+    expect(Hanami::RSpec::VERSION).to eq("2.1.0.rc3")
   end
 end
