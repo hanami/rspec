@@ -5,7 +5,7 @@ RSpec and testing support for [Hanami applications](https://github.com/hanami/ha
 ## Status
 
 [![Gem Version](https://badge.fury.io/rb/hanami-rspec.svg)](https://badge.fury.io/rb/hanami-rspec)
-[![CI](https://github.com/hanami/rspec/workflows/ci/badge.svg?branch=main)](https://github.com/hanami/rspec/actions?query=workflow%3Aci+branch%3Amain)
+[![CI](https://github.com/hanami/rspec/actions/workflows/ci.yml/badge.svgch=main)](https://github.com/hanami/rspec/actions?query=workflow%3Aci+branch%3Amain)
 [![Depfu](https://badges.depfu.com/badges/a8545fb67cf32a2c75b6227bc0821027/overview.svg)](https://depfu.com/github/hanami/rspec?project=Bundler)
 
 ## Contact
@@ -13,14 +13,11 @@ RSpec and testing support for [Hanami applications](https://github.com/hanami/ha
 - Home page: http://hanamirb.org
 - Mailing List: http://hanamirb.org/mailing-list
 - Bugs/Issues: https://github.com/hanami/rspec/issues
-- Support: http://stackoverflow.com/questions/tagged/hanami
 - Chat: http://chat.hanamirb.org
 
-## Rubies
-
-**Hanami::RSpec** supports Ruby (MRI) 3.0+
-
 ## Installation
+
+**Hanami::RSpec** supports Ruby (MRI) 3.1+
 
 Add this line to your application's Gemfile:
 
@@ -57,4 +54,4 @@ Everyone interacting in the `Hanami::RSpec` project's codebases, issue trackers,
 
 ## Copyright
 
-Copyright © 2014 Hanami Team – Released under MIT License
+Copyright © 2014–2024 Hanami Team – Released under MIT License
