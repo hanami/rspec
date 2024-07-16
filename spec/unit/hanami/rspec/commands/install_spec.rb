@@ -121,6 +121,9 @@ RSpec.describe Hanami::RSpec::Commands::Install do
           # related to randomization by passing the same `--seed` value as the one that
           # triggered the failure.
           Kernel.srand config.seed
+
+          # This allows you to use Success(..) and Failure(..) for dry-operation results
+          config.include Dry::Monads[:result]
         end
       EOF
       expect(fs.read("spec/support/rspec.rb")).to eq(support_rspec)

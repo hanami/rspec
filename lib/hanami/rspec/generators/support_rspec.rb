@@ -58,4 +58,7 @@ RSpec.configure do |config|
   # related to randomization by passing the same `--seed` value as the one that
   # triggered the failure.
   Kernel.srand config.seed
+
+  # This allows you to use Success(..) and Failure(..) for dry-operation results
+  config.include Dry::Monads[:result]
 end
