@@ -55,6 +55,7 @@ RSpec.describe Hanami::RSpec::Commands::Install do
 
         require_relative "support/rspec"
         require_relative "support/features"
+        require_relative "support/operations"
         require_relative "support/requests"
       EOF
       expect(fs.read("spec/spec_helper.rb")).to eq(spec_helper)
@@ -121,9 +122,6 @@ RSpec.describe Hanami::RSpec::Commands::Install do
           # related to randomization by passing the same `--seed` value as the one that
           # triggered the failure.
           Kernel.srand config.seed
-
-          # This allows you to use Success(..) and Failure(..) for dry-operation results
-          config.include Dry::Monads[:result]
         end
       EOF
       expect(fs.read("spec/support/rspec.rb")).to eq(support_rspec)
@@ -137,6 +135,18 @@ RSpec.describe Hanami::RSpec::Commands::Install do
         Capybara.app = Hanami.app
       EOF
       expect(fs.read("spec/support/features.rb")).to eq(support_features)
+
+      support_operations = <<~EOF
+        # frozen_string_literal: true
+
+        require "dry/monads"
+
+        RSpec.configure do |config|
+          # Provide `Success` and `Failure` for testing operation results
+          config.include Dry::Monads[:result]
+        end
+      EOF
+      expect(fs.read("spec/support/operations.rb")).to eq(support_operations)
 
       # spec/support/requests.rb
       support_requests = <<~EOF
