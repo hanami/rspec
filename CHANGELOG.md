@@ -4,6 +4,10 @@ RSpec support for Hanami
 
 ## v2.2.0.beta1 - 2024-07-16
 
+### Added
+
+- [Sean Collins] Include `Dry::Monads[:result]` in tests via `support/operations.rb`
+
 ### Changed
 
 - Drop support for Ruby 3.0
