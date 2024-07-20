@@ -53,7 +53,7 @@ RSpec.describe Hanami::RSpec::Commands::Install do
         ENV["HANAMI_ENV"] ||= "test"
         require "hanami/prepare"
 
-        Dir["./spec/support/**/*.rb"].each { |f| require f }
+        SPEC_ROOT.glob("support/**/*.rb").each { |f| require f }
       EOF
       expect(fs.read("spec/spec_helper.rb")).to eq(spec_helper)
 
