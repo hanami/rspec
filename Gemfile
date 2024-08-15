@@ -14,4 +14,4 @@ gem "dry-system", github: "dry-rb/dry-system", branch: "main"
 
 gem "hanami-utils", github: "hanami/utils", branch: "main"
 gem "hanami-cli", github: "hanami/cli", branch: "main"
-gem "hanami", path: "../hanami"
+gem "hanami", github: "hanami/hanami", branch: "main"
