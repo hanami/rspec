@@ -4,6 +4,12 @@ RSpec support for Hanami
 
 ## v2.2.0.beta1 - 2024-07-16
 
+### Changed
+
+- [Sean Collins] In generated `spec_helper.rb`, require all files under `spec/support/` in a loop, rather than via manual requires (#24)
+
+## v2.2.0.beta1 - 2024-07-16
+
 ### Added
 
 - [Sean Collins] Include `Dry::Monads[:result]` in tests via `support/operations.rb`
