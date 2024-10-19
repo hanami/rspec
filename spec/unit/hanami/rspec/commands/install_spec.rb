@@ -13,6 +13,11 @@ RSpec.describe Hanami::RSpec::Commands::Install do
 
     let(:arbitrary_argument) { {} }
 
+    before do
+      allow(Hanami).to receive(:bundled?).and_call_original
+      allow(Hanami).to receive(:bundled?).with("hanami-db").and_return true
+    end
+
     around do |example|
       fs.chdir(dir) { example.run }
     ensure
@@ -25,6 +30,10 @@ RSpec.describe Hanami::RSpec::Commands::Install do
       # Gemfile
       gemfile = <<~EOF
         group :test do
+          # Database
+          gem "database_cleaner-sequel"
+
+          # Web integration
           gem "capybara"
           gem "rack-test"
         end
@@ -123,6 +132,61 @@ RSpec.describe Hanami::RSpec::Commands::Install do
       EOF
       expect(fs.read("spec/support/rspec.rb")).to eq(support_rspec)
 
+      support_db = <<~EOF
+        # frozen_string_literal: true
+
+        # Tag feature spec examples with `db: true`
+        #
+        # See support/db/cleaning.rb for how the database is cleaned around these :db examples.
+        RSpec.configure do |config|
+          config.define_derived_metadata(type: :feature) do |metadata|
+            metadata[:db] = true
+          end
+        end
+      EOF
+      expect(fs.read("spec/support/db.rb")).to eq support_db
+
+      support_db_cleaning = <<~EOF
+        # frozen_string_literal: true
+
+        require "database_cleaner/sequel"
+
+        # Clean the databases between tests tagged as `:db`
+        RSpec.configure do |config|
+          all_databases = -> {
+            slices = [Hanami.app] + Hanami.app.slices.with_nested
+
+            slices.each_with_object([]) { |slice, dbs|
+              next unless slice.key?("db.rom")
+
+              dbs.concat slice["db.rom"].gateways.values.map(&:connection)
+            }.uniq
+          }
+
+          config.before :suite do
+            all_databases.call.each do |db|
+              DatabaseCleaner[:sequel, db: db].clean_with :truncation, except: ["schema_migrations"]
+            end
+          end
+
+          config.before :each, :db do |example|
+            strategy = example.metadata[:js] ? :truncation : :transaction
+
+            all_databases.call.each do |db|
+              DatabaseCleaner[:sequel, db: db].strategy = strategy
+              DatabaseCleaner[:sequel, db: db].start
+            end
+          end
+
+          config.after :each, :db do
+            all_databases.call.each do |db|
+              DatabaseCleaner[:sequel, db: db].clean
+            end
+          end
+        end
+      EOF
+      expect(fs.read("spec/support/db/cleaning.rb")).to eq support_db_cleaning
+
       # spec/support/features.rb
       support_features = <<~EOF
         # frozen_string_literal: true
@@ -178,6 +242,33 @@ RSpec.describe Hanami::RSpec::Commands::Install do
         end
       EOF
       expect(fs.read("spec/requests/root_spec.rb")).to eq(request_spec)
+    end
+
+    context "hanami-db not bundled" do
+      before do
+        allow(Hanami).to receive(:bundled?).with("hanami-db").and_return false
+      end
+
+      it "does not add the database_cleaner gem to the Gemfile" do
+        subject.call(arbitrary_argument)
+
+        # Gemfile
+        gemfile = <<~EOF
+          group :test do
+            # Web integration
+            gem "capybara"
+            gem "rack-test"
+          end
+        EOF
+        expect(fs.read("Gemfile")).to include(gemfile)
+      end
+
+      it "does not add DB-related spec support files" do
+        subject.call(arbitrary_argument)
+
+        expect(fs.exist?("spec/support/db.rb")).to be false
+        expect(fs.exist?("spec/support/db/cleaning.rb")).to be false
+      end
     end
   end
 end

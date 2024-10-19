@@ -18,6 +18,7 @@ module Hanami
           copy_dotrspec
           copy_spec_helper
           copy_support_rspec
+          copy_support_db
           copy_support_features
           copy_support_operations
           copy_support_requests
@@ -28,9 +29,11 @@ module Hanami
         private
 
         def append_gemfile
+          gemfile_template = Hanami.bundled?("hanami-db") ? "gemfile_db" : "gemfile"
+
           fs.append(
             fs.expand_path("Gemfile"),
-            fs.read(fs.expand_path(fs.join("generators", "gemfile"), __dir__))
+            fs.read(fs.expand_path(fs.join("generators", gemfile_template), __dir__))
           )
         end
 
@@ -59,6 +62,20 @@ module Hanami
           fs.cp(
             fs.expand_path(fs.join("generators", "support_rspec.rb"), __dir__),
             fs.expand_path(fs.join("spec", "support", "rspec.rb"))
+          )
+        end
+
+        def copy_support_db
+          return unless Hanami.bundled?("hanami-db")
+
+          fs.cp(
+            fs.expand_path(fs.join("generators/support_db.rb"), __dir__),
+            fs.expand_path(fs.join("spec", "support", "db.rb"))
+          )
+
+          fs.cp(
+            fs.expand_path(fs.join("generators/support_db_cleaning.rb"), __dir__),
+            fs.expand_path(fs.join("spec", "support", "db", "cleaning.rb"))
           )
         end
 
