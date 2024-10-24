@@ -135,9 +135,9 @@ RSpec.describe Hanami::RSpec::Commands::Install do
       support_db = <<~EOF
         # frozen_string_literal: true
 
-        # Tag feature spec examples with `db: true`
+        # Tag feature spec examples as `:db`
         #
-        # See support/db/cleaning.rb for how the database is cleaned around these :db examples.
+        # See support/db/cleaning.rb for how the database is cleaned around these `:db` examples.
         RSpec.configure do |config|
           config.define_derived_metadata(type: :feature) do |metadata|
             metadata[:db] = true
@@ -153,6 +153,11 @@ RSpec.describe Hanami::RSpec::Commands::Install do
 
         # Clean the databases between tests tagged as `:db`
         RSpec.configure do |config|
+          # Returns all the configured databases across the app and its slices.
+          #
+          # Used in the before/after hooks below to ensure each database is cleaned between examples.
+          #
+          # Modify this proc (or any code below) if you only need specific databases cleaned.
           all_databases = -> {
             slices = [Hanami.app] + Hanami.app.slices.with_nested
 

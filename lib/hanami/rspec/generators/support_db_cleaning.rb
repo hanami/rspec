@@ -4,6 +4,11 @@ require "database_cleaner/sequel"
 
 # Clean the databases between tests tagged as `:db`
 RSpec.configure do |config|
+  # Returns all the configured databases across the app and its slices.
+  #
+  # Used in the before/after hooks below to ensure each database is cleaned between examples.
+  #
+  # Modify this proc (or any code below) if you only need specific databases cleaned.
   all_databases = -> {
     slices = [Hanami.app] + Hanami.app.slices.with_nested
 
