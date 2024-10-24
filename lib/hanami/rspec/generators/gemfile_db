@@ -1,5 +1,8 @@
 
 group :test do
+  # Database
+  gem "database_cleaner-sequel"
+
   # Web integration
   gem "capybara"
   gem "rack-test"
