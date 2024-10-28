@@ -2,6 +2,16 @@
 
 RSpec support for Hanami
 
+## v2.2.0.rc1 - 2024-10-29
+
+### Added
+
+- [Tim Riley] As part of `hanami install`, add `database_cleaner-sequel` to the `Gemfile` and generate DatabaseCleaner configuration in `spec/support/db.rb` and `spec/support/db/cleaning.rb` (#28)
+
+### Changed
+
+- [Seb Wilgosz] Only enhance `generate` CLI commands if the relevant gems are bundled (#26)
+
 ## v2.2.0.beta1 - 2024-07-16
 
 ### Changed
