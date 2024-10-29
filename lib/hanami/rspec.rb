@@ -34,8 +34,14 @@ module Hanami
     if Hanami::CLI.within_hanami_app?
       Hanami::CLI.after "install", Commands::Install
       Hanami::CLI.after "generate slice", Commands::Generate::Slice
-      Hanami::CLI.after "generate action", Commands::Generate::Action
-      Hanami::CLI.after "generate part", Commands::Generate::Part
+      
+      if Hanami.bundled?("hanami-controller")
+        Hanami::CLI.after "generate action", Commands::Generate::Action
+      end
+
+      if Hanami.bundled?("hanami-view")
+        Hanami::CLI.after "generate part", Commands::Generate::Part
+      end
     end
   end
 end
