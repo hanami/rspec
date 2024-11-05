@@ -2,6 +2,12 @@
 
 RSpec support for Hanami
 
+## v2.2.0 - 2024-11-05
+
+### Changed
+
+- [Paweł Świątkowski, Seb Wilgosz] Only enhance `generate` CLI commands if the relevant gems are bundled (#29)
+
 ## v2.2.0.rc1 - 2024-10-29
 
 ### Added
