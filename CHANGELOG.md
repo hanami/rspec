@@ -2,6 +2,12 @@
 
 RSpec support for Hanami
 
+## v2.2.1 - 2024-11-12
+
+### Changed
+
+- [Tim Riley] Modify `Gemfile` via a `before "install"` hook on the `hanami` CLI. This ensures that testing-related gems are installed as part of running `hanami new` (#30)
+
 ## v2.2.0 - 2024-11-05
 
 ### Changed
