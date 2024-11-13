@@ -32,7 +32,7 @@ module Hanami
     require_relative "rspec/rake_tasks"
 
     if Hanami::CLI.within_hanami_app?
-      Hanami::CLI.after "install", Commands::Install
+      Hanami::CLI.before "install", Commands::Install
       Hanami::CLI.after "generate slice", Commands::Generate::Slice
 
       if Hanami.bundled?("hanami-controller")
