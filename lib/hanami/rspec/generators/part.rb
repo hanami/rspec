@@ -17,7 +17,21 @@ module Hanami
 
         # @since 2.1.0
         # @api private
-        def call(app, slice, name, context: Hanami::CLI::Generators::App::PartContext.new(inflector, app, slice, name))
+        def call(app, slice, name)
+          context = Data.define(
+            :camelized_app_name,
+            :camelized_slice_name,
+            :camelized_name,
+            :underscored_name,
+            :ruby_omit_hash_values?
+          ).new(
+            camelized_app_name: inflector.camelize(app),
+            camelized_slice_name: slice ? inflector.camelize(slice) : nil,
+            camelized_name: inflector.camelize(name),
+            underscored_name: inflector.underscore(name),
+            ruby_omit_hash_values?: RUBY_VERSION >= "3.1"
+          )
+
           if slice
             generate_for_slice(slice, context)
           else
@@ -90,7 +104,7 @@ module Hanami
           ERB.new(
             File.read(__dir__ + "/part/#{path}"),
             trim_mode: "-"
-          ).result(context.ctx)
+          ).result(context.instance_eval { binding })
         end
 
         # @since 2.1.0

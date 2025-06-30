@@ -17,7 +17,12 @@ module Hanami
 
         # @since 2.0.0
         # @api private
-        def call(slice, context: Hanami::CLI::Generators::App::SliceContext.new(inflector, nil, slice, nil))
+        def call(slice)
+          context = Data.define(:slice, :camelized_slice_name).new(
+            slice: slice,
+            camelized_slice_name: inflector.camelize(slice)
+          )
+
           fs.write("spec/slices/#{slice}/action_spec.rb", t("action_spec.erb", context))
           # fs.write("spec/slices/#{slice}/view_spec.rb", t("view_spec.erb", context))
           # fs.write("spec/slices/#{slice}/repository_spec.rb", t("repository_spec.erb", context))
@@ -41,7 +46,7 @@ module Hanami
 
           ERB.new(
             File.read(__dir__ + "/slice/#{path}")
-          ).result(context.ctx)
+          ).result(context.instance_eval { binding })
         end
 
         alias_method :t, :template
