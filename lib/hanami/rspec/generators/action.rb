@@ -18,16 +18,16 @@ module Hanami
         # @since 2.0.0
         # @api private
         def call(app, slice, controller, action)
-          context = Data.define(
+          context = Struct.new(
             :camelized_app_name,
             :camelized_slice_name,
             :camelized_controller_name,
             :camelized_action_name
           ).new(
-            camelized_app_name: inflector.camelize(app),
-            camelized_slice_name: slice ? inflector.camelize(slice) : nil,
-            camelized_controller_name: camelized_controller_name(controller),
-            camelized_action_name: inflector.camelize(action)
+            inflector.camelize(app),
+            slice ? inflector.camelize(slice) : nil,
+            camelized_controller_name(controller),
+            inflector.camelize(action)
           )
 
           if slice

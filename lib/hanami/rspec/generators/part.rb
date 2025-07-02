@@ -18,18 +18,18 @@ module Hanami
         # @since 2.1.0
         # @api private
         def call(app, slice, name)
-          context = Data.define(
+          context = Struct.new(
             :camelized_app_name,
             :camelized_slice_name,
             :camelized_name,
             :underscored_name,
             :ruby_omit_hash_values?
           ).new(
-            camelized_app_name: inflector.camelize(app),
-            camelized_slice_name: slice ? inflector.camelize(slice) : nil,
-            camelized_name: inflector.camelize(name),
-            underscored_name: inflector.underscore(name),
-            ruby_omit_hash_values?: RUBY_VERSION >= "3.1"
+            inflector.camelize(app),
+            slice ? inflector.camelize(slice) : nil,
+            inflector.camelize(name),
+            inflector.underscore(name),
+            RUBY_VERSION >= "3.1"
           )
 
           if slice

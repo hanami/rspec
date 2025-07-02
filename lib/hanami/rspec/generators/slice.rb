@@ -18,9 +18,9 @@ module Hanami
         # @since 2.0.0
         # @api private
         def call(slice)
-          context = Data.define(:slice, :camelized_slice_name).new(
-            slice: slice,
-            camelized_slice_name: inflector.camelize(slice)
+          context = Struct.new(:slice, :camelized_slice_name).new(
+            slice,
+            inflector.camelize(slice)
           )
 
           fs.write("spec/slices/#{slice}/action_spec.rb", t("action_spec.erb", context))
