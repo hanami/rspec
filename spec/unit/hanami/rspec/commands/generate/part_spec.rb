@@ -20,65 +20,33 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Part do
           within_application_directory do
             subject.call({name: part_name})
 
-            if ruby_omit_hash_values?
-              base_part_spec = <<~EXPECTED
-                # frozen_string_literal: true
+            base_part_spec = <<~EXPECTED
+              # frozen_string_literal: true
 
-                RSpec.describe #{app_name}::Views::Part do
-                  subject { described_class.new(value:) }
-                  let(:value) { double("value") }
+              RSpec.describe #{app_name}::Views::Part do
+                subject { described_class.new(value:) }
+                let(:value) { double("value") }
 
-                  it "works" do
-                    expect(subject).to be_kind_of(described_class)
-                  end
+                it "works" do
+                  expect(subject).to be_kind_of(described_class)
                 end
-              EXPECTED
-              expect(fs.read("spec/views/part_spec.rb")).to eq(base_part_spec)
+              end
+            EXPECTED
+            expect(fs.read("spec/views/part_spec.rb")).to eq(base_part_spec)
 
-              part_spec = <<~EXPECTED
-                # frozen_string_literal: true
+            part_spec = <<~EXPECTED
+              # frozen_string_literal: true
 
-                RSpec.describe #{app_name}::Views::Parts::Client do
-                  subject { described_class.new(value:) }
-                  let(:value) { double("client") }
+              RSpec.describe #{app_name}::Views::Parts::Client do
+                subject { described_class.new(value:) }
+                let(:value) { double("client") }
 
-                  it "works" do
-                    expect(subject).to be_kind_of(described_class)
-                  end
+                it "works" do
+                  expect(subject).to be_kind_of(described_class)
                 end
-              EXPECTED
-              expect(fs.read("spec/views/parts/client_spec.rb")).to eq(part_spec)
-            end
-
-            unless ruby_omit_hash_values?
-              base_part_spec = <<~EXPECTED
-                # frozen_string_literal: true
-
-                RSpec.describe #{app_name}::Views::Part do
-                  subject { described_class.new(value: value) }
-                  let(:value) { double("value") }
-
-                  it "works" do
-                    expect(subject).to be_kind_of(described_class)
-                  end
-                end
-              EXPECTED
-              expect(fs.read("spec/views/part_spec.rb")).to eq(base_part_spec)
-
-              part_spec = <<~EXPECTED
-                # frozen_string_literal: true
-
-                RSpec.describe #{app_name}::Views::Parts::Client do
-                  subject { described_class.new(value: value) }
-                  let(:value) { double("client") }
-
-                  it "works" do
-                    expect(subject).to be_kind_of(described_class)
-                  end
-                end
-              EXPECTED
-              expect(fs.read("spec/views/parts/client_spec.rb")).to eq(part_spec)
-            end
+              end
+            EXPECTED
+            expect(fs.read("spec/views/parts/client_spec.rb")).to eq(part_spec)
           end
         end
       end
@@ -90,35 +58,20 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Part do
 
             subject.call({name: part_name})
 
-            if ruby_omit_hash_values?
-              <<~EXPECTED
-                # frozen_string_literal: true
+            part_spec = <<~EXPECTED
+              # frozen_string_literal: true
 
-                RSpec.describe #{app_name}::Views::Parts::Client do
-                  subject { described_class.new(value:) }
-                  let(:value) { double("client") }
+              RSpec.describe #{app_name}::Views::Parts::Client do
+                subject { described_class.new(value:) }
+                let(:value) { double("client") }
 
-                  it "works" do
-                    expect(subject).to be_kind_of(described_class)
-                  end
+                it "works" do
+                  expect(subject).to be_kind_of(described_class)
                 end
-              EXPECTED
-            else
-              part_spec = <<~EXPECTED
-                # frozen_string_literal: true
+              end
+            EXPECTED
 
-                RSpec.describe #{app_name}::Views::Parts::Client do
-                  subject { described_class.new(value: value) }
-                  let(:value) { double("client") }
-
-                  it "works" do
-                    expect(subject).to be_kind_of(described_class)
-                  end
-                end
-              EXPECTED
-
-              expect(fs.read("spec/views/parts/client_spec.rb")).to eq(part_spec)
-            end
+            expect(fs.read("spec/views/parts/client_spec.rb")).to eq(part_spec)
           end
         end
       end
@@ -143,93 +96,47 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Part do
           within_application_directory do
             subject.call({slice: slice, name: part_name})
 
-            if ruby_omit_hash_values?
-              base_part_spec = <<~EXPECTED
-                # frozen_string_literal: true
+            base_part_spec = <<~EXPECTED
+              # frozen_string_literal: true
 
-                RSpec.describe #{app_name}::Views::Part do
-                  subject { described_class.new(value:) }
-                  let(:value) { double("value") }
+              RSpec.describe #{app_name}::Views::Part do
+                subject { described_class.new(value:) }
+                let(:value) { double("value") }
 
-                  it "works" do
-                    expect(subject).to be_kind_of(described_class)
-                  end
+                it "works" do
+                  expect(subject).to be_kind_of(described_class)
                 end
-              EXPECTED
-              expect(fs.read("spec/views/part_spec.rb")).to eq(base_part_spec)
+              end
+            EXPECTED
+            expect(fs.read("spec/views/part_spec.rb")).to eq(base_part_spec)
 
-              base_slice_part_spec = <<~EXPECTED
-                # frozen_string_literal: true
+            base_slice_part_spec = <<~EXPECTED
+              # frozen_string_literal: true
 
-                RSpec.describe #{slice_name}::Views::Part do
-                  subject { described_class.new(value:) }
-                  let(:value) { double("value") }
+              RSpec.describe #{slice_name}::Views::Part do
+                subject { described_class.new(value:) }
+                let(:value) { double("value") }
 
-                  it "works" do
-                    expect(subject).to be_kind_of(described_class)
-                  end
+                it "works" do
+                  expect(subject).to be_kind_of(described_class)
                 end
-              EXPECTED
-              expect(fs.read("spec/slices/#{slice}/views/part_spec.rb")).to eq(base_slice_part_spec)
+              end
+            EXPECTED
+            expect(fs.read("spec/slices/#{slice}/views/part_spec.rb")).to eq(base_slice_part_spec)
 
-              part_spec = <<~EXPECTED
-                # frozen_string_literal: true
+            part_spec = <<~EXPECTED
+              # frozen_string_literal: true
 
-                RSpec.describe #{slice_name}::Views::Parts::Client do
-                  subject { described_class.new(value:) }
-                  let(:value) { double("client") }
+              RSpec.describe #{slice_name}::Views::Parts::Client do
+                subject { described_class.new(value:) }
+                let(:value) { double("client") }
 
-                  it "works" do
-                    expect(subject).to be_kind_of(described_class)
-                  end
+                it "works" do
+                  expect(subject).to be_kind_of(described_class)
                 end
-              EXPECTED
-              expect(fs.read("spec/slices/#{slice}/views/parts/client_spec.rb")).to eq(part_spec)
-            end
-
-            unless ruby_omit_hash_values?
-              base_part_spec = <<~EXPECTED
-                # frozen_string_literal: true
-
-                RSpec.describe #{app_name}::Views::Part do
-                  subject { described_class.new(value: value) }
-                  let(:value) { double("value") }
-
-                  it "works" do
-                    expect(subject).to be_kind_of(described_class)
-                  end
-                end
-              EXPECTED
-              expect(fs.read("spec/views/part_spec.rb")).to eq(base_part_spec)
-
-              base_slice_part_spec = <<~EXPECTED
-                # frozen_string_literal: true
-
-                RSpec.describe #{slice_name}::Views::Part do
-                  subject { described_class.new(value: value) }
-                  let(:value) { double("value") }
-
-                  it "works" do
-                    expect(subject).to be_kind_of(described_class)
-                  end
-                end
-              EXPECTED
-              expect(fs.read("spec/slices/#{slice}/views/part_spec.rb")).to eq(base_slice_part_spec)
-
-              part_spec = <<~EXPECTED
-                # frozen_string_literal: true
-
-                RSpec.describe #{slice_name}::Views::Parts::Client do
-                  subject { described_class.new(value: value) }
-                  let(:value) { double("client") }
-
-                  it "works" do
-                    expect(subject).to be_kind_of(described_class)
-                  end
-                end
-              EXPECTED
-              expect(fs.read("spec/slices/#{slice}/views/parts/client_spec.rb")).to eq(part_spec)
-            end
+              end
+            EXPECTED
+            expect(fs.read("spec/slices/#{slice}/views/parts/client_spec.rb")).to eq(part_spec)
           end
         end
       end
@@ -242,33 +149,18 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Part do
 
             subject.call({slice: slice, name: part_name})
 
-            if ruby_omit_hash_values?
-              part_spec = <<~EXPECTED
-                # frozen_string_literal: true
+            part_spec = <<~EXPECTED
+              # frozen_string_literal: true
 
-                RSpec.describe #{slice_name}::Views::Parts::Client do
-                  subject { described_class.new(value:) }
-                  let(:value) { double("client") }
+              RSpec.describe #{slice_name}::Views::Parts::Client do
+                subject { described_class.new(value:) }
+                let(:value) { double("client") }
 
-                  it "works" do
-                    expect(subject).to be_kind_of(described_class)
-                  end
+                it "works" do
+                  expect(subject).to be_kind_of(described_class)
                 end
-              EXPECTED
-            else
-              part_spec = <<~EXPECTED
-                # frozen_string_literal: true
-
-                RSpec.describe #{slice_name}::Views::Parts::Client do
-                  subject { described_class.new(value: value) }
-                  let(:value) { double("client") }
-
-                  it "works" do
-                    expect(subject).to be_kind_of(described_class)
-                  end
-                end
-              EXPECTED
-            end
+              end
+            EXPECTED
             expect(fs.read("spec/slices/#{slice}/views/parts/client_spec.rb")).to eq(part_spec)
           end
         end
@@ -322,9 +214,5 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Part do
 
       yield
     end
-  end
-
-  def ruby_omit_hash_values?
-    RUBY_VERSION >= "3.1"
   end
 end

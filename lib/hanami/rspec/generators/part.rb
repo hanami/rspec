@@ -22,14 +22,12 @@ module Hanami
             :camelized_app_name,
             :camelized_slice_name,
             :camelized_name,
-            :underscored_name,
-            :ruby_omit_hash_values?
+            :underscored_name
           ).new(
             inflector.camelize(app),
             slice ? inflector.camelize(slice) : nil,
             inflector.camelize(name),
-            inflector.underscore(name),
-            RUBY_VERSION >= "3.1"
+            inflector.underscore(name)
           )
 
           if slice
