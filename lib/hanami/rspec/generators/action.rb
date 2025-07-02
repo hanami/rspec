@@ -17,7 +17,19 @@ module Hanami
 
         # @since 2.0.0
         # @api private
-        def call(app, slice, controller, action, context: Hanami::CLI::Generators::App::ActionContext.new(inflector, app, slice, controller, action)) # rubocop:disable Layout/LineLength
+        def call(app, slice, controller, action)
+          context = Struct.new(
+            :camelized_app_name,
+            :camelized_slice_name,
+            :camelized_controller_name,
+            :camelized_action_name
+          ).new(
+            inflector.camelize(app),
+            slice ? inflector.camelize(slice) : nil,
+            camelized_controller_name(controller),
+            inflector.camelize(action)
+          )
+
           if slice
             fs.write(
               "spec/slices/#{slice}/actions/#{controller_directory(controller)}/#{action}_spec.rb",
@@ -43,12 +55,18 @@ module Hanami
           fs.join(controller)
         end
 
+        # @api private
+        # @param controller [Array<String>]
+        def camelized_controller_name(controller)
+          controller.map { |part| inflector.camelize(part) }.join("::")
+        end
+
         def template(path, context)
           require "erb"
 
           ERB.new(
             File.read(__dir__ + "/action/#{path}")
-          ).result(context.ctx)
+          ).result(context.instance_eval { binding })
         end
 
         alias_method :t, :template
