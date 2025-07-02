@@ -1,11 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe <%= camelized_slice_name %>::Views::Part do
-<%- if ruby_omit_hash_values? -%>
   subject { described_class.new(value:) }
-<%- else -%>
-  subject { described_class.new(value: value) }
-<%- end -%>
   let(:value) { double("value") }
 
   it "works" do
