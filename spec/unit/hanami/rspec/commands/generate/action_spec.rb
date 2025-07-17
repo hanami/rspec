@@ -7,7 +7,7 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Action do
   describe "#call" do
     subject { described_class.new(fs: fs, inflector: inflector) }
 
-    let(:fs) { Hanami::CLI::Files.new }
+    let(:fs) { Dry::Files.new }
     let(:inflector) { Dry::Inflector.new }
 
     let(:app_name) { "Bookshelf" }
