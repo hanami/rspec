@@ -134,11 +134,13 @@ module Hanami
             return if options[:skip_tests]
 
             slice = inflector.underscore(Shellwords.shellescape(options[:slice])) if options[:slice]
-            name = inflector.underscore(Shellwords.shellescape(options[:name]))
-            *controller, action = name.split(ACTION_SEPARATOR)
+            key = inflector.underscore(Shellwords.shellescape(options[:name]))
+
+            namespace = slice ? inflector.camelize(slice) : app.namespace
+            base_path = slice ? "spec/slices/#{slice}" : "spec"
 
             generator = Generators::Action.new(fs: fs, inflector: inflector)
-            generator.call(app.namespace, slice, controller, action)
+            generator.call(key: key, namespace: namespace, base_path: base_path)
           end
         end
 

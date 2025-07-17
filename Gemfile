@@ -9,5 +9,5 @@ unless ENV["CI"]
 end
 
 gem "hanami-utils", github: "hanami/utils", branch: "main"
-gem "hanami-cli", github: "hanami/cli", branch: "main"
+gem "hanami-cli", github: "hanami/cli", branch: "add-path-to-ruby-class-file"
 gem "hanami", github: "hanami/hanami", branch: "main"

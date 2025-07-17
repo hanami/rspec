@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "erb"
+require "hanami/cli/generators/app/ruby_class_file"
 
 module Hanami
   module RSpec
@@ -17,59 +17,43 @@ module Hanami
 
         # @since 2.0.0
         # @api private
-        def call(app, slice, controller, action)
-          context = Struct.new(
-            :camelized_app_name,
-            :camelized_slice_name,
-            :camelized_controller_name,
-            :camelized_action_name
-          ).new(
-            inflector.camelize(app),
-            slice ? inflector.camelize(slice) : nil,
-            camelized_controller_name(controller),
-            inflector.camelize(action)
-          )
+        def call(key:, namespace:, base_path:)
+          ruby_class_file = action_ruby_class_file(key: key, namespace: namespace, base_path: base_path)
+          spec_file_path = ruby_class_file.path.gsub(/\.rb$/, "_spec.rb")
+          action_class_name = ruby_class_file.fully_qualified_name
 
-          if slice
-            fs.write(
-              "spec/slices/#{slice}/actions/#{controller_directory(controller)}/#{action}_spec.rb",
-              t("action_slice_spec.erb", context)
-            )
-          else
-            fs.write(
-              "spec/actions/#{controller_directory(controller)}/#{action}_spec.rb",
-              t("action_spec.erb", context)
-            )
-          end
+          fs.write(spec_file_path, spec_content(action_class_name))
         end
 
         private
 
-        attr_reader :fs
+        attr_reader :fs, :inflector
 
-        attr_reader :inflector
-
-        # @api private
-        # @param controller [Array<String>]
-        def controller_directory(controller)
-          fs.join(controller)
+        def action_ruby_class_file(key:, namespace:, base_path:)
+          Hanami::CLI::Generators::App::RubyClassFile.new(
+            fs: fs,
+            inflector: inflector,
+            namespace: namespace,
+            key: inflector.underscore(key),
+            base_path: base_path,
+            extra_namespace: "Actions",
+          )
         end
 
-        # @api private
-        # @param controller [Array<String>]
-        def camelized_controller_name(controller)
-          controller.map { |part| inflector.camelize(part) }.join("::")
+        def spec_content(class_name)
+          <<~RUBY
+            # frozen_string_literal: true
+
+            RSpec.describe #{class_name} do
+              let(:params) { Hash[] }
+
+              it "works" do
+                response = subject.call(params)
+                expect(response).to be_successful
+              end
+            end
+          RUBY
         end
-
-        def template(path, context)
-          require "erb"
-
-          ERB.new(
-            File.read(__dir__ + "/action/#{path}")
-          ).result(context.instance_eval { binding })
-        end
-
-        alias_method :t, :template
       end
     end
   end
