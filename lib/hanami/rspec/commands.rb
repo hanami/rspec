@@ -139,8 +139,8 @@ module Hanami
             namespace = slice ? inflector.camelize(slice) : app.namespace
             base_path = slice ? "spec/slices/#{slice}" : "spec"
 
-            generator = Generators::Action.new(fs: fs, inflector: inflector)
-            generator.call(key: key, namespace: namespace, base_path: base_path)
+            generator = Generators::Action.new(fs:, inflector:)
+            generator.call(key:, namespace:, base_path:)
           end
         end
 
