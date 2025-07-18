@@ -16,6 +16,8 @@ Style/BlockDelimiters:
   Enabled: false
 Style/CommentedKeyword:
   Enabled: false
+Style/HashSyntax:
+  EnforcedShorthandSyntax: either_consistent
 Style/LambdaCall:
   Enabled: false
 Style/TrailingCommaInArguments:
