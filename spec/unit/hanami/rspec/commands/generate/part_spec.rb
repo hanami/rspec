@@ -11,7 +11,6 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Part do
     let(:inflector) { Dry::Inflector.new }
 
     let(:app_name) { "Bookshelf" }
-
     let(:part_name) { "client" }
 
     context "app" do
