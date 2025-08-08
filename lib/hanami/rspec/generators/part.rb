@@ -18,7 +18,7 @@ module Hanami
         # @since 2.1.0
         # @api private
         def call(key:, namespace:, base_path:, app_namespace:)
-          ruby_class_file = part_ruby_class_file(key: key, namespace: namespace, base_path: base_path)
+          ruby_class_file = part_ruby_class_file(key:, namespace:, base_path:)
           spec_file_path = ruby_class_file.path.gsub(/\.rb$/, "_spec.rb")
           part_class_name = ruby_class_file.fully_qualified_name
 
