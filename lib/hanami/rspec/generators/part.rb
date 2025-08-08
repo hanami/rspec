@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "erb"
+require "hanami/cli/generators/app/ruby_class_file"
 
 module Hanami
   module RSpec
@@ -17,97 +17,76 @@ module Hanami
 
         # @since 2.1.0
         # @api private
-        def call(app, slice, name)
-          context = Struct.new(
-            :camelized_app_name,
-            :camelized_slice_name,
-            :camelized_name,
-            :underscored_name
-          ).new(
-            inflector.camelize(app),
-            slice ? inflector.camelize(slice) : nil,
-            inflector.camelize(name),
-            inflector.underscore(name)
-          )
+        def call(key:, namespace:, base_path:, app_namespace:)
+          ruby_class_file = part_ruby_class_file(key:, namespace:, base_path:)
+          spec_file_path = ruby_class_file.path.gsub(/\.rb$/, "_spec.rb")
+          part_class_name = ruby_class_file.fully_qualified_name
 
-          if slice
-            generate_for_slice(slice, context)
-          else
-            generate_for_app(context)
-          end
+          generate_base_part_specs(namespace:, base_path:, app_namespace:)
+          fs.write(spec_file_path, spec_content(part_class_name))
         end
 
         private
 
-        # @since 2.1.0
-        # @api private
-        def generate_for_slice(slice, context)
-          generate_base_part_for_app(context)
-          generate_base_part_for_slice(context, slice)
+        attr_reader :fs, :inflector
 
-          fs.write(
-            "spec/slices/#{slice}/views/parts/#{context.underscored_name}_spec.rb",
-            t("part_slice_spec.erb", context)
+        def part_ruby_class_file(key:, namespace:, base_path:)
+          Hanami::CLI::Generators::App::RubyClassFile.new(
+            fs: fs,
+            inflector: inflector,
+            namespace: namespace,
+            key: key,
+            base_path: base_path,
+            extra_namespace: "views/parts",
           )
         end
 
-        # @since 2.1.0
-        # @api private
-        def generate_for_app(context)
-          generate_base_part_for_app(context)
+        def generate_base_part_specs(namespace:, base_path:, app_namespace:)
+          if base_path != "spec"
+            generate_base_part_spec_at(fs.join("spec", "views", "part_spec.rb"), app_namespace)
 
-          fs.write(
-            "spec/views/parts/#{context.underscored_name}_spec.rb",
-            t("part_spec.erb", context)
-          )
+          end
+          generate_base_part_spec_at(fs.join(base_path, "views", "part_spec.rb"), namespace)
         end
 
-        # @since 2.1.0
-        # @api private
-        def generate_base_part_for_app(context)
-          path = fs.join("spec", "views", "part_spec.rb")
+        def spec_content(class_name)
+          # Extract the part name from the class name for the let variable
+          part_name = class_name.split("::").last.downcase
+
+          <<~RUBY
+            # frozen_string_literal: true
+
+            RSpec.describe #{class_name} do
+              subject { described_class.new(value:) }
+              let(:value) { double("#{part_name}") }
+
+              it "works" do
+                expect(subject).to be_kind_of(described_class)
+              end
+            end
+          RUBY
+        end
+
+        def generate_base_part_spec_at(path, namespace)
           return if fs.exist?(path)
 
-          fs.write(
-            path,
-            t("part_base_spec.erb", context)
-          )
+          fs.write(path, base_part_spec_content(namespace))
         end
 
-        # @since 2.1.0
-        # @api private
-        def generate_base_part_for_slice(context, slice)
-          path = "spec/slices/#{slice}/views/part_spec.rb"
-          return if fs.exist?(path)
+        def base_part_spec_content(namespace)
+          <<~RUBY
+            # frozen_string_literal: true
 
-          fs.write(
-            path,
-            t("part_slice_base_spec.erb", context)
-          )
+            RSpec.describe #{namespace}::Views::Part do
+              subject { described_class.new(value:) }
+              let(:value) { double("value") }
+
+              it "works" do
+                expect(subject).to be_kind_of(described_class)
+              end
+            end
+          RUBY
         end
-
-        # @since 2.1.0
-        # @api private
-        attr_reader :fs
-
-        # @since 2.1.0
-        # @api private
-        attr_reader :inflector
-
-        # @since 2.1.0
-        # @api private
-        def template(path, context)
-          require "erb"
-
-          ERB.new(
-            File.read(__dir__ + "/part/#{path}"),
-            trim_mode: "-"
-          ).result(context.instance_eval { binding })
-        end
-
-        # @since 2.1.0
-        # @api private
-        alias_method :t, :template
       end
     end
   end
