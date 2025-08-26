@@ -21,16 +21,20 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Slice do
       EXPECTED
       expect(fs.read("spec/slices/#{slice}/action_spec.rb")).to eq(action_spec)
 
-      # # spec/<slice>/view_spec.rb
-      # view_spec = <<~EXPECTED
-      #   # frozen_string_literal: true
-      #
-      #   require "slices/#{slice}/view"
-      #
-      #   RSpec.describe #{inflector.camelize(slice)}::View do
-      #   end
-      # EXPECTED
-      # expect(fs.read("spec/slices/#{slice}/view_spec.rb")).to eq(view_spec)
+      # spec/<slice>/actions/.keep
+      expect(fs.read("spec/slices/#{slice}/actions/.keep")).to eq("\n")
+
+      # spec/<slice>/view_spec.rb
+      view_spec = <<~EXPECTED
+        # frozen_string_literal: true
+
+        RSpec.describe #{inflector.camelize(slice)}::View do
+        end
+      EXPECTED
+      expect(fs.read("spec/slices/#{slice}/view_spec.rb")).to eq(view_spec)
+
+      # spec/<slice>/views/.keep
+      expect(fs.read("spec/slices/#{slice}/views/.keep")).to eq("\n")
 
       # # spec/<slice>/repository_spec.rb
       # repository_spec = <<~EXPECTED
@@ -44,14 +48,8 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Slice do
       # expect(fs.read("spec/slices/#{slice}/repository_spec.rb")).to eq(repository_spec)
 
       # Keep file
-      keep = <<~EXPECTED # rubocop:disable Style/EmptyHeredoc
-      EXPECTED
 
-      # spec/<slice>/actions/.keep
-      expect(fs.read("spec/slices/#{slice}/actions/.keep")).to eq(keep)
       #
-      # # spec/<slice>/views/.keep
-      # expect(fs.read("spec/slices/#{slice}/views/.keep")).to eq(keep)
       #
       # # spec/<slice>/templates/.keep
       # expect(fs.read("spec/slices/#{slice}/templates/.keep")).to eq(keep)
