@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "erb"
-
 module Hanami
   module RSpec
     module Generators
@@ -18,38 +16,44 @@ module Hanami
         # @since 2.0.0
         # @api private
         def call(slice)
-          context = Struct.new(:slice, :camelized_slice_name).new(
-            slice,
-            inflector.camelize(slice)
+          fs.write(
+            "spec/slices/#{slice}/action_spec.rb",
+            class_spec_content(slice_name: slice, class_name: "Action"),
           )
+          fs.write("spec/slices/#{slice}/actions/.keep", keep_content)
 
-          fs.write("spec/slices/#{slice}/action_spec.rb", t("action_spec.erb", context))
-          # fs.write("spec/slices/#{slice}/view_spec.rb", t("view_spec.erb", context))
+          if Hanami.bundled?("hanami-view")
+            fs.write(
+              "spec/slices/#{slice}/view_spec.rb",
+              class_spec_content(slice_name: slice, class_name: "View"),
+            )
+            fs.write("spec/slices/#{slice}/views/.keep", keep_content)
+          end
+
           # fs.write("spec/slices/#{slice}/repository_spec.rb", t("repository_spec.erb", context))
-
-          fs.write("spec/slices/#{slice}/actions/.keep", t("keep.erb", context))
-          # fs.write("spec/slices/#{slice}/views/.keep", t("keep.erb", context))
-          # fs.write("spec/slices/#{slice}/templates/.keep", t("keep.erb", context))
-          # fs.write("spec/slices/#{slice}/templates/layouts/.keep", t("keep.erb", context))
           # fs.write("spec/slices/#{slice}/entities/.keep", t("keep.erb", context))
           # fs.write("spec/slices/#{slice}/repositories/.keep", t("keep.erb", context))
         end
 
         private
 
-        attr_reader :fs
+        attr_reader :fs, :inflector
 
-        attr_reader :inflector
-
-        def template(path, context)
-          require "erb"
-
-          ERB.new(
-            File.read(__dir__ + "/slice/#{path}")
-          ).result(context.instance_eval { binding })
+        def keep_content
+          "\n"
         end
 
-        alias_method :t, :template
+        def class_spec_content(slice_name:, class_name:)
+          camelized_slice_name = inflector.camelize(slice_name)
+
+          <<~RUBY
+            # frozen_string_literal: true
+
+            RSpec.describe #{camelized_slice_name}::#{class_name} do
+              xit "works"
+            end
+          RUBY
+        end
       end
     end
   end
