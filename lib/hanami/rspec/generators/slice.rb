@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "erb"
-
 module Hanami
   module RSpec
     module Generators
@@ -18,16 +16,13 @@ module Hanami
         # @since 2.0.0
         # @api private
         def call(slice)
-          context = Struct.new(:slice, :camelized_slice_name).new(
-            slice,
-            inflector.camelize(slice)
-          )
+          camelized_slice_name = inflector.camelize(slice)
 
-          fs.write("spec/slices/#{slice}/action_spec.rb", t("action_spec.erb", context))
+          fs.write("spec/slices/#{slice}/action_spec.rb", action_spec_content(camelized_slice_name))
+          fs.touch("spec/slices/#{slice}/actions/.keep")
+
           # fs.write("spec/slices/#{slice}/view_spec.rb", t("view_spec.erb", context))
           # fs.write("spec/slices/#{slice}/repository_spec.rb", t("repository_spec.erb", context))
-
-          fs.write("spec/slices/#{slice}/actions/.keep", t("keep.erb", context))
           # fs.write("spec/slices/#{slice}/views/.keep", t("keep.erb", context))
           # fs.write("spec/slices/#{slice}/templates/.keep", t("keep.erb", context))
           # fs.write("spec/slices/#{slice}/templates/layouts/.keep", t("keep.erb", context))
@@ -37,19 +32,17 @@ module Hanami
 
         private
 
-        attr_reader :fs
+        attr_reader :fs, :inflector
 
-        attr_reader :inflector
+        def action_spec_content(camelized_slice_name)
+          <<~RUBY
+            # frozen_string_literal: true
 
-        def template(path, context)
-          require "erb"
-
-          ERB.new(
-            File.read(__dir__ + "/slice/#{path}")
-          ).result(context.instance_eval { binding })
+            RSpec.describe #{camelized_slice_name}::Action do
+              xit "works"
+            end
+          RUBY
         end
-
-        alias_method :t, :template
       end
     end
   end
