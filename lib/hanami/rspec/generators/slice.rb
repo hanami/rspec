@@ -21,12 +21,12 @@ module Hanami
           fs.write("spec/slices/#{slice}/action_spec.rb", action_spec_content(camelized_slice_name))
           fs.write("spec/slices/#{slice}/actions/.keep", keep_content)
 
-          fs.write("spec/slices/#{slice}/view_spec.rb", view_spec_content(camelized_slice_name))
-          fs.write("spec/slices/#{slice}/views/.keep", keep_content)
+          if Hanami.bundled?("hanami-view")
+            fs.write("spec/slices/#{slice}/view_spec.rb", view_spec_content(camelized_slice_name))
+            fs.write("spec/slices/#{slice}/views/.keep", keep_content)
+          end
+
           # fs.write("spec/slices/#{slice}/repository_spec.rb", t("repository_spec.erb", context))
-          # fs.write("spec/slices/#{slice}/views/.keep", t("keep.erb", context))
-          # fs.write("spec/slices/#{slice}/templates/.keep", t("keep.erb", context))
-          # fs.write("spec/slices/#{slice}/templates/layouts/.keep", t("keep.erb", context))
           # fs.write("spec/slices/#{slice}/entities/.keep", t("keep.erb", context))
           # fs.write("spec/slices/#{slice}/repositories/.keep", t("keep.erb", context))
         end
