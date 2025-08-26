@@ -16,13 +16,17 @@ module Hanami
         # @since 2.0.0
         # @api private
         def call(slice)
-          camelized_slice_name = inflector.camelize(slice)
-
-          fs.write("spec/slices/#{slice}/action_spec.rb", action_spec_content(camelized_slice_name))
+          fs.write(
+            "spec/slices/#{slice}/action_spec.rb",
+            class_spec_content(slice_name: slice, class_name: "Action"),
+          )
           fs.write("spec/slices/#{slice}/actions/.keep", keep_content)
 
           if Hanami.bundled?("hanami-view")
-            fs.write("spec/slices/#{slice}/view_spec.rb", view_spec_content(camelized_slice_name))
+            fs.write(
+              "spec/slices/#{slice}/view_spec.rb",
+              class_spec_content(slice_name: slice, class_name: "View"),
+            )
             fs.write("spec/slices/#{slice}/views/.keep", keep_content)
           end
 
@@ -39,21 +43,14 @@ module Hanami
           "\n"
         end
 
-        def action_spec_content(camelized_slice_name)
+        def class_spec_content(slice_name:, class_name:)
+          camelized_slice_name = inflector.camelize(slice_name)
+
           <<~RUBY
             # frozen_string_literal: true
 
-            RSpec.describe #{camelized_slice_name}::Action do
+            RSpec.describe #{camelized_slice_name}::#{class_name} do
               xit "works"
-            end
-          RUBY
-        end
-
-        def view_spec_content(camelized_slice_name)
-          <<~RUBY
-            # frozen_string_literal: true
-
-            RSpec.describe #{camelized_slice_name}::View do
             end
           RUBY
         end

@@ -31,6 +31,7 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Slice do
         # frozen_string_literal: true
 
         RSpec.describe #{inflector.camelize(slice)}::View do
+          xit "works"
         end
       EXPECTED
       expect(fs.read("spec/slices/#{slice}/view_spec.rb")).to eq(view_spec)
