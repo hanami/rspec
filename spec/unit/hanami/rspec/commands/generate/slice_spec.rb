@@ -2,10 +2,10 @@
 
 RSpec.describe Hanami::RSpec::Commands::Generate::Slice do
   describe "#call" do
-    subject { described_class.new(fs: fs, inflector: inflector) }
+    subject { described_class.new(fs: fs) }
 
     let(:fs) { Dry::Files.new(memory: true) }
-    let(:inflector) { Dry::Inflector.new }
+
     let(:slice) { "main" }
 
     it "generates spec files" do
@@ -15,7 +15,7 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Slice do
       action_spec = <<~EXPECTED
         # frozen_string_literal: true
 
-        RSpec.describe #{inflector.camelize(slice)}::Action do
+        RSpec.describe Main::Action do
           xit "works"
         end
       EXPECTED
@@ -27,7 +27,7 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Slice do
       #
       #   require "slices/#{slice}/view"
       #
-      #   RSpec.describe #{inflector.camelize(slice)}::View do
+      #   RSpec.describe Main::View do
       #   end
       # EXPECTED
       # expect(fs.read("spec/slices/#{slice}/view_spec.rb")).to eq(view_spec)
@@ -38,7 +38,7 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Slice do
       #
       #   require "slices/#{slice}/repository"
       #
-      #   RSpec.describe #{inflector.camelize(slice)}::Repository do
+      #   RSpec.describe Main::Repository do
       #   end
       # EXPECTED
       # expect(fs.read("spec/slices/#{slice}/repository_spec.rb")).to eq(repository_spec)

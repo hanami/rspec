@@ -5,10 +5,9 @@ require "securerandom"
 
 RSpec.describe Hanami::RSpec::Commands::Generate::Action do
   describe "#call" do
-    subject { described_class.new(fs: fs, inflector: inflector) }
+    subject { described_class.new(fs: fs) }
 
     let(:fs) { Dry::Files.new }
-    let(:inflector) { Dry::Inflector.new }
 
     let(:app_name) { "Bookshelf" }
 
