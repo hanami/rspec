@@ -10,7 +10,6 @@ RSpec.describe Hanami::RSpec::Commands::Generate::Part do
     let(:fs) { Dry::Files.new }
 
     let(:app_name) { "Bookshelf" }
-
     let(:part_name) { "client" }
 
     context "app" do
